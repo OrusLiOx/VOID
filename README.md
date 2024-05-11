@@ -1,2 +1,2 @@
 # gwj69
-horde survival game made for Godot Wild Jam 69
+Godot Wild Jam 67 submission
