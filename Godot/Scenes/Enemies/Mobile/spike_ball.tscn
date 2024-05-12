@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://36hpcj5sdadc"]
+
+[ext_resource type="PackedScene" uid="uid://c2h47aefbvi62" path="res://Scenes/Enemies/_Generic/enemy_base.tscn" id="1_bsdi2"]
+[ext_resource type="Script" path="res://Scenes/Enemies/Mobile/Scripts/spike_ball.gd" id="1_sdcaq"]
+[ext_resource type="Texture2D" uid="uid://csxr85ua61wrs" path="res://Sprites/Enemies/spikeBall.png" id="2_4rft0"]
+[ext_resource type="Texture2D" uid="uid://bbj43tv2yos7n" path="res://Sprites/Enemies/spikeBallBase.png" id="4_faix2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wu0fs"]
+radius = 23.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yel2x"]
+radius = 34.0147
+
+[node name="SpikeBall" type="Node2D"]
+script = ExtResource("1_sdcaq")
+
+[node name="EnemyBase" parent="." instance=ExtResource("1_bsdi2")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBase"]
+shape = SubResource("CircleShape2D_wu0fs")
+
+[node name="Spikes" type="Sprite2D" parent="."]
+texture = ExtResource("2_4rft0")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("4_faix2")
+
+[node name="Hurt" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurt"]
+shape = SubResource("CircleShape2D_yel2x")

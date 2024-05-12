@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://du43f4iskj6je"]
+
+[ext_resource type="Texture2D" uid="uid://mxceipx6qii4" path="res://Sprites/Enemies/wave.png" id="1_i4adj"]
+[ext_resource type="Script" path="res://Scenes/Enemies/_Generic/Scripts/projectile.gd" id="1_vctmd"]
+
+[node name="Wave" type="Area2D" groups=["Projectile"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_vctmd")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(9, -9, 11, -11, 15, -4, 15, 3, 11, 11, 9, 9, 12, 3, 12, -4)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 0.785398
+scale = Vector2(1, 1)
+texture = ExtResource("1_i4adj")

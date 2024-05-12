@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dkdjrodvejcie"]
+
+[ext_resource type="Script" path="res://Scenes/Enemies/Mobile/Scripts/dasher.gd" id="1_0qste"]
+[ext_resource type="Texture2D" uid="uid://clwn3ahodhdf6" path="res://Sprites/Enemies/dasher.png" id="1_4ojuv"]
+[ext_resource type="PackedScene" uid="uid://c2h47aefbvi62" path="res://Scenes/Enemies/_Generic/enemy_base.tscn" id="3_jqnpb"]
+
+[node name="Dasher" type="Node2D"]
+script = ExtResource("1_0qste")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("1_4ojuv")
+
+[node name="EnemyBase" parent="." instance=ExtResource("3_jqnpb")]
+collision_layer = 6
+collision_mask = 6
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="EnemyBase"]
+polygon = PackedVector2Array(22, 0, -22, -19, -5, 0, -22, 19)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

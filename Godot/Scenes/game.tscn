@@ -1,0 +1,86 @@
+[gd_scene load_steps=12 format=3 uid="uid://cglbpyq6fsq81"]
+
+[ext_resource type="PackedScene" uid="uid://dnaqej8yhbeu8" path="res://Scenes/player.tscn" id="1_cp43h"]
+[ext_resource type="Script" path="res://Scenes/Scripts/game.gd" id="1_dbkqe"]
+[ext_resource type="PackedScene" uid="uid://kxxnagfkc52w" path="res://Scenes/Enemies/Hazard/spike_bomb.tscn" id="3_0fcws"]
+[ext_resource type="PackedScene" uid="uid://b22a51onmnnyg" path="res://Scenes/Enemies/Hazard/bomb.tscn" id="4_g8ps7"]
+[ext_resource type="PackedScene" uid="uid://cndnusybtyktq" path="res://Scenes/Enemies/Hazard/wave_bomb.tscn" id="5_4i8lf"]
+[ext_resource type="PackedScene" uid="uid://36hpcj5sdadc" path="res://Scenes/Enemies/Mobile/spike_ball.tscn" id="6_koi1l"]
+[ext_resource type="PackedScene" uid="uid://dkdjrodvejcie" path="res://Scenes/Enemies/Mobile/dasher.tscn" id="7_3uhsf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_npagf"]
+size = Vector2(2000, 1200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ofhto"]
+size = Vector2(20, 1500)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cfueg"]
+size = Vector2(2000, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m70uc"]
+size = Vector2(2000, 20)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_dbkqe")
+
+[node name="validZone" type="Area2D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="validZone"]
+position = Vector2(968, 533)
+shape = SubResource("RectangleShape2D_npagf")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="Boundaries" type="Node2D" parent="."]
+
+[node name="Left" type="StaticBody2D" parent="Boundaries"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/Left"]
+position = Vector2(-10, 526)
+shape = SubResource("RectangleShape2D_ofhto")
+
+[node name="Right" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(1930, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/Right"]
+position = Vector2(0, 526)
+shape = SubResource("RectangleShape2D_ofhto")
+
+[node name="Down" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(7, 1100)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/Down"]
+position = Vector2(986, -10)
+shape = SubResource("RectangleShape2D_cfueg")
+
+[node name="Up" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(978, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/Up"]
+shape = SubResource("RectangleShape2D_m70uc")
+
+[node name="Player" parent="." instance=ExtResource("1_cp43h")]
+z_index = 1
+position = Vector2(1093, 305)
+
+[node name="SpikeBomb" parent="." instance=ExtResource("3_0fcws")]
+position = Vector2(692, 527)
+
+[node name="Bomb" parent="." instance=ExtResource("4_g8ps7")]
+position = Vector2(1312, 428)
+
+[node name="WaveBomb" parent="." instance=ExtResource("5_4i8lf")]
+position = Vector2(802, 342)
+
+[node name="SpikeBall" parent="." instance=ExtResource("6_koi1l")]
+position = Vector2(1484, 528)
+
+[node name="Dasher" parent="." instance=ExtResource("7_3uhsf")]
+position = Vector2(543, 719)
+
+[connection signal="area_exited" from="validZone" to="." method="_on_valid_zone_area_exited"]

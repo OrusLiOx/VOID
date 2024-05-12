@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0py2t8u1ckwd"]
+
+[ext_resource type="Script" path="res://Scenes/Enemies/_Generic/Scripts/projectile.gd" id="1_db5ul"]
+[ext_resource type="Texture2D" uid="uid://c8crsqg0o3mlb" path="res://Sprites/Enemies/projectile.png" id="1_swyam"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0bp0k"]
+size = Vector2(24, 4)
+
+[node name="Projectile" type="Area2D" groups=["Projectile"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_db5ul")
+metadata/damage = 25
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(11, 0)
+shape = SubResource("RectangleShape2D_0bp0k")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_swyam")
