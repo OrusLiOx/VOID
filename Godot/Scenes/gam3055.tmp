@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dkdjrodvejcie" path="res://Scenes/Enemies/Mobile/dasher.tscn" id="7_3uhsf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npagf"]
-size = Vector2(3942, 1909)
+size = Vector2(2000, 1200)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ofhto"]
 size = Vector2(20, 1500)
@@ -23,11 +23,11 @@ size = Vector2(2000, 20)
 script = ExtResource("1_dbkqe")
 
 [node name="validZone" type="Area2D" parent="."]
-collision_layer = 7
-collision_mask = 7
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="validZone"]
-position = Vector2(1150, 679.5)
+position = Vector2(968, 533)
 shape = SubResource("RectangleShape2D_npagf")
 
 [node name="Background" type="ColorRect" parent="."]
@@ -70,19 +70,16 @@ z_index = 1
 position = Vector2(1093, 305)
 holdAbilities = NodePath("../PlayerCasts")
 
-[node name="SpikeBomb" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("3_0fcws")]
+[node name="SpikeBomb" parent="." instance=ExtResource("3_0fcws")]
 position = Vector2(692, 527)
-parent = NodePath("../holdProjectiles")
 
-[node name="WaveBomb" parent="." node_paths=PackedStringArray("holdProj") instance=ExtResource("5_4i8lf")]
+[node name="WaveBomb" parent="." instance=ExtResource("5_4i8lf")]
 position = Vector2(1431, 675)
-holdProj = NodePath("../holdProjectiles")
 
 [node name="Dasher" parent="." instance=ExtResource("7_3uhsf")]
 position = Vector2(252, 184)
 
 [node name="SpikeBall" parent="." instance=ExtResource("6_koi1l")]
-
-[node name="holdProjectiles" type="Node2D" parent="."]
+position = Vector2(975, 698)
 
 [connection signal="area_exited" from="validZone" to="." method="_on_valid_zone_area_exited"]

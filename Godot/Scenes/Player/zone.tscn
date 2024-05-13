@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7b1aj6606plx"]
+
+[ext_resource type="Script" path="res://Scenes/Player/Scripts/zone.gd" id="1_fquef"]
+[ext_resource type="PackedScene" uid="uid://utq7f315sbc6" path="res://Scenes/Player/circle.tscn" id="2_teeh3"]
+
+[node name="Zone" type="Node2D"]
+script = ExtResource("1_fquef")
+
+[node name="Circle" parent="." instance=ExtResource("2_teeh3")]
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="area_entered" from="Circle" to="." method="_on_circle_area_entered"]
+[connection signal="area_exited" from="Circle" to="." method="_on_circle_area_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
