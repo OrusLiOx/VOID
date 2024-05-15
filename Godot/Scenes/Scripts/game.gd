@@ -1,5 +1,6 @@
 extends Node2D
-
+# 
+var gameState
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -7,7 +8,12 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):	
+func _process(_delta):	
+	if Input.is_action_just_pressed("Pause"):
+		if Engine.time_scale == 0:
+			Engine.time_scale = 1
+		else:
+			Engine.time_scale = 0
 	pass
 
 

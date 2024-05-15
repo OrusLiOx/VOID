@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://cglbpyq6fsq81"]
+[gd_scene load_steps=12 format=3 uid="uid://cglbpyq6fsq81"]
 
 [ext_resource type="PackedScene" uid="uid://dnaqej8yhbeu8" path="res://Scenes/Player/player.tscn" id="1_cp43h"]
 [ext_resource type="Script" path="res://Scenes/Scripts/game.gd" id="1_dbkqe"]
+[ext_resource type="PackedScene" uid="uid://c7umn3wpd4dbn" path="res://Scenes/Player/ability_visual.tscn" id="2_y0ouu"]
 [ext_resource type="PackedScene" uid="uid://kxxnagfkc52w" path="res://Scenes/Enemies/Hazard/spike_bomb.tscn" id="3_0fcws"]
 [ext_resource type="PackedScene" uid="uid://cndnusybtyktq" path="res://Scenes/Enemies/Hazard/wave_bomb.tscn" id="5_4i8lf"]
 [ext_resource type="PackedScene" uid="uid://36hpcj5sdadc" path="res://Scenes/Enemies/Mobile/spike_ball.tscn" id="6_koi1l"]
@@ -34,6 +35,32 @@ shape = SubResource("RectangleShape2D_npagf")
 offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0, 0, 0, 1)
+
+[node name="Hud" type="Node2D" parent="."]
+
+[node name="Abilities" type="Node2D" parent="Hud"]
+
+[node name="AbilityVisual" parent="Hud/Abilities" instance=ExtResource("2_y0ouu")]
+position = Vector2(59, 56)
+
+[node name="AbilityVisual2" parent="Hud/Abilities" instance=ExtResource("2_y0ouu")]
+position = Vector2(159, 56)
+ability = 1
+
+[node name="AbilityVisual3" parent="Hud/Abilities" instance=ExtResource("2_y0ouu")]
+position = Vector2(259, 56)
+ability = 2
+
+[node name="AbilityVisual4" parent="Hud/Abilities" instance=ExtResource("2_y0ouu")]
+position = Vector2(359, 56)
+ability = 3
+
+[node name="Label" type="Label" parent="Hud"]
+offset_right = 1920.0
+offset_bottom = 75.0
+theme_override_font_sizes/font_size = 30
+text = "Wave 0"
+horizontal_alignment = 1
 
 [node name="Boundaries" type="Node2D" parent="."]
 

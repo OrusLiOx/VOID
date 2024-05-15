@@ -8,8 +8,9 @@ var hp = 100
 var healthBar
 
 var a:Dictionary
-var cd:Array 
+var charges:Array 
 var zone
+var cd:Array
 @export var holdAbilities:Node
 
 func _ready():
@@ -20,35 +21,42 @@ func _ready():
 		{
 			"range": 300,
 			"duration": 3,
-			"cooldown":7
+			"cooldown":7,
+			"charges":2
 		},
 		1:
 		{
 			"range": 300,
 			"duration": 3,
 			"cooldown":7,
-			"effectDuration":0
+			"effectDuration":0,
+			"charges":1
 		},
 		2:
 		{
 			"duration": 2,
 			"speedup": 1.5,
-			"cooldown":10
+			"cooldown":10,
+			"charges":1
 		},
 		3:
 		{
 			"range": 300,
-			"cooldown":60
+			"cooldown":60,
+			"charges":1
 		},
 	}
 	for i in 4:
-		cd.push_back([0])
+		var timer = Timer.new()
+		$Cooldowns.add_child(timer)
+		cd.push_back(timer)
+		timer.timeout.connect(cd_timeout.bind(i))
+		charges.push_back(a[i]["charges"])
 	Globals.player = self
 	healthBar = $Health
 
 func _process(delta):
 	process_ability_select()
-	process_cooldown(delta)
 	
 	# i frame flicker
 	if iframes <=0:
@@ -60,7 +68,7 @@ func _process(delta):
 		else:
 			healthBar.modulate.a = .8
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# Move
 	velocity = Input.get_vector("Left","Right","Up","Down")*speed 
 		
@@ -94,22 +102,13 @@ func process_ability_select():
 	for i in 4:
 		if Input.is_action_just_pressed("Ability"+str(i)):
 			cast_ability(i)
-
-func process_cooldown(delta):
-	for a in cd.size():
-		for i in cd[a].size():
-			if cd[a][i] > 0:
-				cd[a][i] -= delta
 			
 func cast_ability(ability):
-	var slot = -1
-	for i in cd[ability].size():
-		if cd[ability][i]<=0:
-			slot = i
-			cd[ability][i] = a[1]["cooldown"]
-			break
-	if slot == -1:
+	if charges[ability] <= 0:
 		return
+	charges[ability] -= 1
+	if cd[ability].is_stopped():
+		cd[ability].start(a[ability]["cooldown"])
 	match ability:
 		0:
 			cast0()
@@ -119,6 +118,13 @@ func cast_ability(ability):
 			cast2()
 		3:
 			cast3()
+
+func cd_timeout(ability):
+	charges[ability]+=1
+	if charges[ability]<a[ability]["charges"]:
+		cd[ability].start(a[ability]["cooldown"])
+	else:
+		cd[ability].stop()
 
 func cast0():
 	var cast = zone.instantiate()
