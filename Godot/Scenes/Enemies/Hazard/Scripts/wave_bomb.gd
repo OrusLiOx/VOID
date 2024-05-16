@@ -3,7 +3,6 @@ var wave
 var timer
 var base
 var waves:Array
-@export var holdProj :Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,7 +28,7 @@ func spawn_wave():
 	if waves.size() >= 6:
 		waves.front().queue_free()
 		waves.remove_at(0)
-	holdProj.add_child(parent)
+	Globals.holdProj.add_child(parent)
 	if $EnemyBase.is_jammed:
 		return
 	var rot = (base.rotation-(PI/2))*-1

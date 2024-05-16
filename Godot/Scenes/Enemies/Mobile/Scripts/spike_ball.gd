@@ -1,15 +1,17 @@
 extends Node2D
 var hit
+var speed
 
 func _ready():
 	hit = $Hurt
 	modulate = Globals.dangerColor
+	speed = randi_range(70,110)
 	pass # Replace with function body.
 
 
 func _process(delta):
 	if Globals.player != null:
-		position += global_position.direction_to(Globals.player.global_position)*delta*100
+		position += global_position.direction_to(Globals.player.global_position)*delta*speed
 	pass
 
 func set_jam(jammed):

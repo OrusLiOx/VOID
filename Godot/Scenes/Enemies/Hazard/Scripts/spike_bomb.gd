@@ -3,7 +3,6 @@ var spawned
 var spikes = 6
 var rot
 var spawnRot =0
-@export var parent:Node
 var proj:PackedScene
 var timer
 var sprite
@@ -39,7 +38,7 @@ func launch_wave():
 		return
 	for i in spikes:
 		var child = proj.instantiate()
-		parent.add_child(child)
+		Globals.holdProj.add_child(child)
 		child.global_position = global_position
 		child.rotation = 2*PI/spikes*i+sprite.rotation
 		child.go()

@@ -27,7 +27,7 @@ func _process(delta):
 		dest = global_position
 	elif go and global_position.distance_squared_to(dest) > 100:
 		var newPos = position + dir*delta
-		if newPos.x<10 or newPos.x>1910 or newPos.y<10 or newPos.y>1070:
+		if newPos.x<134 or newPos.x>1910 or newPos.y<134 or newPos.y>1070:
 			go = false
 			pick_dest()
 		else:
@@ -40,7 +40,7 @@ func _process(delta):
 func pick_dest():
 	if Globals.player != null:
 		dir = global_position.direction_to(Globals.player.global_position)
-		dir *= global_position.distance_to(Globals.player.global_position)+200
+		dir *= global_position.distance_to(Globals.player.global_position)+randi_range(100,300)
 		dest = dir+global_position
 		dir = dir.normalized()*1000
 		rotation = dir.angle()

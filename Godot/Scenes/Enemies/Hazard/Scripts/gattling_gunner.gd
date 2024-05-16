@@ -1,5 +1,4 @@
 extends Node2D
-@export var holdProj : Node2D
 var proj
 var rotDest:Array
 var dest
@@ -41,7 +40,7 @@ func _on_timer_timeout():
 	if $EnemyBase.is_jammed:
 		return
 	var shot = proj.instantiate()
-	holdProj.add_child(shot)
+	Globals.holdProj.add_child(shot)
 	shot.position = position
 	shot.rotation = rotation
 	shot.go()

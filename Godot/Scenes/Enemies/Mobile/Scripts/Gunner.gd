@@ -1,7 +1,6 @@
 extends Node2D
 var projectile
 var timer
-@export var parent: Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,7 +23,7 @@ func fire():
 		return
 	for i in [-1,0,1]:
 		var shot = projectile.instantiate()
-		get_parent().add_child(shot)
+		Globals.holdProj.add_child(shot)
 		shot.position = position
 		shot.rotation = rotation+i*deg_to_rad(30)
 		shot.go()

@@ -1,13 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cglbpyq6fsq81"]
+[gd_scene load_steps=8 format=3 uid="uid://cglbpyq6fsq81"]
 
 [ext_resource type="PackedScene" uid="uid://dnaqej8yhbeu8" path="res://Scenes/Player/player.tscn" id="1_cp43h"]
 [ext_resource type="Script" path="res://Scenes/Scripts/game.gd" id="1_dbkqe"]
 [ext_resource type="PackedScene" uid="uid://c7umn3wpd4dbn" path="res://Scenes/Player/ability_visual.tscn" id="2_y0ouu"]
-[ext_resource type="PackedScene" uid="uid://ccxwcm7pkmo2s" path="res://Scenes/Enemies/Hazard/gattling_gunner.tscn" id="6_icd7m"]
-[ext_resource type="PackedScene" uid="uid://36hpcj5sdadc" path="res://Scenes/Enemies/Mobile/spike_ball.tscn" id="7_gk1qt"]
-[ext_resource type="PackedScene" uid="uid://dkdjrodvejcie" path="res://Scenes/Enemies/Mobile/dasher.tscn" id="8_1n8ss"]
-[ext_resource type="PackedScene" uid="uid://ddegavbsi8lrp" path="res://Scenes/Enemies/Hazard/spinning_laser.tscn" id="8_l36c2"]
-[ext_resource type="PackedScene" uid="uid://chwd1xmuhww2r" path="res://Scenes/Enemies/Mobile/gunner.tscn" id="9_ixne5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npagf"]
 size = Vector2(2997, 1909)
@@ -76,16 +71,7 @@ holdAbilities = NodePath("../PlayerCasts")
 
 [node name="holdProjectiles" type="Node2D" parent="."]
 
-[node name="SpinningLaser" parent="." instance=ExtResource("8_l36c2")]
-position = Vector2(613, 747)
-
-[node name="Gunner" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("9_ixne5")]
-position = Vector2(430, 511)
-parent = NodePath("../holdProjectiles")
-
-[node name="gattlingGunner" parent="." node_paths=PackedStringArray("holdProj") instance=ExtResource("6_icd7m")]
-position = Vector2(240, 66)
-holdProj = NodePath("../holdProjectiles")
+[node name="holdEnemies" type="Node2D" parent="."]
 
 [node name="Hud" type="Node2D" parent="."]
 z_index = 9
@@ -180,12 +166,6 @@ theme_override_font_sizes/font_size = 100
 text = "PAUSE"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="SpikeBall" parent="." instance=ExtResource("7_gk1qt")]
-position = Vector2(429, 953)
-
-[node name="Dasher" parent="." instance=ExtResource("8_1n8ss")]
-position = Vector2(376, 705)
 
 [node name="WaveTimer" type="Timer" parent="."]
 

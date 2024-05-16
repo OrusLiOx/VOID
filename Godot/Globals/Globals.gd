@@ -3,6 +3,7 @@ var jammedColor
 var dangerColor
 var normalColor
 var player
+var holdProj
 
 func _ready():
 	set_color_type("color")
