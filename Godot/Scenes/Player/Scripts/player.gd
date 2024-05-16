@@ -4,7 +4,8 @@ var speed = 300.0
 var iframes = 0
 var inv = false
 var invTimer:Timer
-var hp = 100
+var hp = 5
+var hpMax = 5
 var healthBar
 
 var a:Dictionary
@@ -12,6 +13,8 @@ var charges:Array
 var zone
 var cd:Array
 @export var holdAbilities:Node
+
+signal update_health(cur, max)
 
 func _ready():
 	invTimer = $Invincibility
@@ -84,18 +87,20 @@ func hit(damage):
 	if iframes >0:
 		return
 	hp = max(0, hp-damage) 
-	healthBar.size.y = 42*hp/100
+	healthBar.size.y = 42*hp/hpMax
 	if hp <=0:
 		die()
 		return
 	iframes = 1
+	emit_signal("update_health", hp, hpMax)
 
 func _on_area_2d_area_entered(area):
 	if area.is_in_group("Projectile"):
 		area.queue_free()
 	if area.name == "validZone" or iframes>0 or inv:
 		return
-	hit(25)
+		
+	hit(1)
 	pass # Replace with function body.
 
 # ability stuff

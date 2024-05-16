@@ -8,6 +8,7 @@
 radius = 65.0308
 
 [node name="SpinningLaser" type="Node2D"]
+z_index = -1
 script = ExtResource("1_so0he")
 
 [node name="Lasers" type="Node2D" parent="."]

@@ -22,13 +22,13 @@ func spawn(dir):
 	rotDest.clear()
 	match dir:
 		0:
-			position = Vector2(50,50)
+			position = Vector2(174,50)
 		1:
 			position = Vector2(1870,50)
 		2:
 			position = Vector2(1870,1030)
 		3:
-			position = Vector2(50,1030)
+			position = Vector2(174,1030)
 	
 	rotDest.push_back(0+PI/2*dir)
 	rotDest.push_back(PI/2+PI/2*dir)
