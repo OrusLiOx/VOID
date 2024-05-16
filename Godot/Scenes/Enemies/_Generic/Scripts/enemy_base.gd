@@ -1,7 +1,9 @@
 extends Node2D
 # -1 = jammed until unjammed, else jammed for jammed seconds
 var jams:Dictionary
-var jammed = false
+var is_jammed = false
+signal jammed()
+signal unjammed()
 
 func _ready():
 	pass # Replace with function body.
@@ -14,7 +16,9 @@ func _process(delta):
 				remove_jam(i)
 
 func jam(obj, time = -1):
-	jammed = true
+	if is_jammed == false:
+		emit_signal("jammed")
+	is_jammed = true
 	jams[obj] = time
 	var color = Globals.jammedColor
 	color.a = get_parent().modulate.a
@@ -26,7 +30,9 @@ func remove_jam(obj):
 		unjam()
 
 func unjam():
-	jammed = false
+	if is_jammed == true:
+		emit_signal("unjammed")
+	is_jammed = false
 	var color = Color.WHITE
 	color.a = get_parent().modulate.a
 	get_parent().modulate = color

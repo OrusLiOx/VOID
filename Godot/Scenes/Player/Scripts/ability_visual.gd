@@ -1,4 +1,4 @@
-extends Sprite2D
+extends Node2D
 @export var ability : int
 var cd
 var current
@@ -6,11 +6,13 @@ var wait = true
 var meter
 var charges
 var chargesLabel
+var sprite
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	meter = $ColorRect
 	chargesLabel = $Charges
+	sprite = $Sprite2D
 	
 	pass # Replace with function body.
 
@@ -29,7 +31,10 @@ func _process(delta):
 		else:
 			meter.size.y = 100* current.time_left/cd
 		if charges[ability] > 0:
-			self_modulate = Color.WHITE
+			sprite.self_modulate = Color.WHITE
 		else:
-			self_modulate = Color(.5,.5,.5)
-		chargesLabel.text = str(charges[ability])
+			sprite.self_modulate = Color(.5,.5,.5)
+		if Globals.player.a[ability]["charges"]>1:
+			chargesLabel.text = str(charges[ability])
+		else:
+			chargesLabel.text = ""

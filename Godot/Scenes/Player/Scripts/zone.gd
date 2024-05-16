@@ -1,6 +1,10 @@
 extends Node2D
 var effectTime
 var effect
+var fade = false
+
+# -1 = no, 0 = wait, 1 = ready, 2 = done
+var removeInAFrame = -1
 
 func set_stuff(size, time, e, eTime = 0):
 	$Circle.set_size(size)
@@ -27,10 +31,21 @@ func set_stuff(size, time, e, eTime = 0):
 			$Circle.set_collision_mask_value(2,true)
 	if time>0:
 		$Timer.start(time)
+	else:
+		fade = true
+		removeInAFrame = 0
 
 func _process(delta):
-	if effect == "kill":
-		modulate.a-=delta*2
+	if fade:
+		match removeInAFrame:
+			0:
+				removeInAFrame = 1
+			1:
+				$Circle.set_collision_mask_value(2,false)
+				$Circle.set_collision_mask_value(3,false)
+				removeInAFrame = 2
+				
+		modulate.a-=delta*4
 		if modulate.a <=0:
 			queue_free()
 	pass

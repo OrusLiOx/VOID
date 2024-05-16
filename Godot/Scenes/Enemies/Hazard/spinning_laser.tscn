@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddegavbsi8lrp"]
+
+[ext_resource type="PackedScene" uid="uid://c2h47aefbvi62" path="res://Scenes/Enemies/_Generic/enemy_base.tscn" id="1_forg2"]
+[ext_resource type="Script" path="res://Scenes/Enemies/Hazard/Scripts/spinning_laser.gd" id="1_so0he"]
+[ext_resource type="Texture2D" uid="uid://bcgn8xnpl8yhp" path="res://Sprites/Enemies/spinLaser.png" id="2_hkc14"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h3rcn"]
+radius = 65.0308
+
+[node name="SpinningLaser" type="Node2D"]
+script = ExtResource("1_so0he")
+
+[node name="Lasers" type="Node2D" parent="."]
+
+[node name="EnemyBase" parent="." instance=ExtResource("1_forg2")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBase"]
+shape = SubResource("CircleShape2D_h3rcn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(7, -2)
+texture = ExtResource("2_hkc14")
+
+[connection signal="jammed" from="EnemyBase" to="." method="_on_enemy_base_jammed"]
+[connection signal="unjammed" from="EnemyBase" to="." method="_on_enemy_base_unjammed"]

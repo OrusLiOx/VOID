@@ -30,7 +30,7 @@ func spawn_wave():
 		waves.front().queue_free()
 		waves.remove_at(0)
 	holdProj.add_child(parent)
-	if $EnemyBase.jammed:
+	if $EnemyBase.is_jammed:
 		return
 	var rot = (base.rotation-(PI/2))*-1
 	for i in 4:

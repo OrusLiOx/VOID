@@ -1,12 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://cglbpyq6fsq81"]
+[gd_scene load_steps=11 format=3 uid="uid://cglbpyq6fsq81"]
 
 [ext_resource type="PackedScene" uid="uid://dnaqej8yhbeu8" path="res://Scenes/Player/player.tscn" id="1_cp43h"]
 [ext_resource type="Script" path="res://Scenes/Scripts/game.gd" id="1_dbkqe"]
 [ext_resource type="PackedScene" uid="uid://c7umn3wpd4dbn" path="res://Scenes/Player/ability_visual.tscn" id="2_y0ouu"]
-[ext_resource type="PackedScene" uid="uid://kxxnagfkc52w" path="res://Scenes/Enemies/Hazard/spike_bomb.tscn" id="3_0fcws"]
-[ext_resource type="PackedScene" uid="uid://cndnusybtyktq" path="res://Scenes/Enemies/Hazard/wave_bomb.tscn" id="5_4i8lf"]
-[ext_resource type="PackedScene" uid="uid://36hpcj5sdadc" path="res://Scenes/Enemies/Mobile/spike_ball.tscn" id="6_koi1l"]
-[ext_resource type="PackedScene" uid="uid://dkdjrodvejcie" path="res://Scenes/Enemies/Mobile/dasher.tscn" id="7_3uhsf"]
+[ext_resource type="PackedScene" uid="uid://ccxwcm7pkmo2s" path="res://Scenes/Enemies/Hazard/gattling_gunner.tscn" id="6_icd7m"]
+[ext_resource type="PackedScene" uid="uid://ddegavbsi8lrp" path="res://Scenes/Enemies/Hazard/spinning_laser.tscn" id="8_l36c2"]
+[ext_resource type="PackedScene" uid="uid://chwd1xmuhww2r" path="res://Scenes/Enemies/Mobile/gunner.tscn" id="9_ixne5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npagf"]
 size = Vector2(3942, 1909)
@@ -39,28 +38,32 @@ color = Color(0, 0, 0, 1)
 [node name="Hud" type="Node2D" parent="."]
 
 [node name="Abilities" type="Node2D" parent="Hud"]
+position = Vector2(1530, 60)
 
 [node name="AbilityVisual" parent="Hud/Abilities" instance=ExtResource("2_y0ouu")]
-position = Vector2(59, 56)
 
 [node name="AbilityVisual2" parent="Hud/Abilities" instance=ExtResource("2_y0ouu")]
-position = Vector2(159, 56)
+position = Vector2(110, 0)
 ability = 1
 
 [node name="AbilityVisual3" parent="Hud/Abilities" instance=ExtResource("2_y0ouu")]
-position = Vector2(259, 56)
+position = Vector2(220, 0)
 ability = 2
 
 [node name="AbilityVisual4" parent="Hud/Abilities" instance=ExtResource("2_y0ouu")]
-position = Vector2(359, 56)
+position = Vector2(330, 0)
 ability = 3
 
-[node name="Label" type="Label" parent="Hud"]
+[node name="Wave" type="Node2D" parent="Hud"]
+
+[node name="Label" type="Label" parent="Hud/Wave"]
 offset_right = 1920.0
 offset_bottom = 75.0
 theme_override_font_sizes/font_size = 30
 text = "Wave 0"
 horizontal_alignment = 1
+
+[node name="Health" type="Node2D" parent="Hud"]
 
 [node name="Boundaries" type="Node2D" parent="."]
 
@@ -97,19 +100,17 @@ z_index = 1
 position = Vector2(1093, 305)
 holdAbilities = NodePath("../PlayerCasts")
 
-[node name="SpikeBomb" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("3_0fcws")]
-position = Vector2(692, 527)
+[node name="holdProjectiles" type="Node2D" parent="."]
+
+[node name="SpinningLaser" parent="." instance=ExtResource("8_l36c2")]
+position = Vector2(613, 747)
+
+[node name="Gunner" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("9_ixne5")]
+position = Vector2(430, 511)
 parent = NodePath("../holdProjectiles")
 
-[node name="WaveBomb" parent="." node_paths=PackedStringArray("holdProj") instance=ExtResource("5_4i8lf")]
-position = Vector2(1431, 675)
+[node name="gattlingGunner" parent="." node_paths=PackedStringArray("holdProj") instance=ExtResource("6_icd7m")]
+position = Vector2(47, 50)
 holdProj = NodePath("../holdProjectiles")
-
-[node name="Dasher" parent="." instance=ExtResource("7_3uhsf")]
-position = Vector2(252, 184)
-
-[node name="SpikeBall" parent="." instance=ExtResource("6_koi1l")]
-
-[node name="holdProjectiles" type="Node2D" parent="."]
 
 [connection signal="area_exited" from="validZone" to="." method="_on_valid_zone_area_exited"]

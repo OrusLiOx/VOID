@@ -16,14 +16,14 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if go and !base.jammed:
+	if go and !base.is_jammed:
 		base.set_collision_layer_value(2, true)
 		modulate = Globals.dangerColor
 	else:
 		base.set_collision_layer_value(2, false)
-		if !base.jammed:
+		if !base.is_jammed:
 			modulate = Globals.normalColor
-	if base.jammed:
+	if base.is_jammed:
 		dest = global_position
 	elif go and global_position.distance_squared_to(dest) > 100:
 		var newPos = position + dir*delta
@@ -46,7 +46,7 @@ func pick_dest():
 		rotation = dir.angle()
 	else:
 		dest = Vector2.ZERO
-	if !base.jammed:
+	if !base.is_jammed:
 		timer.start(1)
 
 

@@ -15,7 +15,7 @@ func set_color_type(type):
 			normalColor = Color("ffffff")
 		"color":
 			jammedColor = Color("abdaff")
-			dangerColor = Color("ffaeae")
+			dangerColor = Color("ff5f5f")
 			normalColor = Color("ffffff")
 		"none":
 			jammedColor = Color("ffffff")

@@ -35,7 +35,7 @@ func _process(delta):
 	pass
 
 func launch_wave():
-	if $EnemyBase.jammed:
+	if $EnemyBase.is_jammed:
 		return
 	for i in spikes:
 		var child = proj.instantiate()

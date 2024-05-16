@@ -27,9 +27,9 @@ func _ready():
 		1:
 		{
 			"range": 300,
-			"duration": 3,
+			"duration": 0,
 			"cooldown":7,
-			"effectDuration":0,
+			"effectDuration":3,
 			"charges":1
 		},
 		2:
@@ -42,6 +42,7 @@ func _ready():
 		3:
 		{
 			"range": 300,
+			"duration": 0,
 			"cooldown":60,
 			"charges":1
 		},
@@ -90,11 +91,11 @@ func hit(damage):
 	iframes = 1
 
 func _on_area_2d_area_entered(area):
+	if area.is_in_group("Projectile"):
+		area.queue_free()
 	if area.name == "validZone" or iframes>0 or inv:
 		return
 	hit(25)
-	if area.is_in_group("Projectile"):
-		area.queue_free()
 	pass # Replace with function body.
 
 # ability stuff
@@ -160,6 +161,6 @@ func cast3():
 	var cast = zone.instantiate()
 	holdAbilities.add_child(cast)
 	cast.global_position = global_position
-	cast.set_stuff(a[3]["range"], 0, "kill")
+	cast.set_stuff(a[3]["range"], a[3]["duration"], "kill")
 	pass
 
