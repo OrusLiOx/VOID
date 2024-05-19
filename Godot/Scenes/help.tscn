@@ -1,0 +1,239 @@
+[gd_scene load_steps=10 format=3 uid="uid://ry50natwfd82"]
+
+[ext_resource type="Script" path="res://Scenes/Scripts/help.gd" id="1_hhb11"]
+[ext_resource type="Texture2D" uid="uid://2feemrq8mq5" path="res://Sprites/Player/PlayerFill.png" id="2_icpsg"]
+[ext_resource type="Texture2D" uid="uid://btp3hahgdcsf6" path="res://Sprites/Player/ability1.png" id="2_v63im"]
+[ext_resource type="Texture2D" uid="uid://wg6g3003pqr8" path="res://Sprites/Player/ability2.png" id="3_kfka8"]
+[ext_resource type="Texture2D" uid="uid://cjixt1fjj6l40" path="res://Sprites/Player/Circle_300.png" id="3_os3eh"]
+[ext_resource type="Texture2D" uid="uid://c8crsqg0o3mlb" path="res://Sprites/Enemies/projectile.png" id="4_1d104"]
+[ext_resource type="Texture2D" uid="uid://mxceipx6qii4" path="res://Sprites/Enemies/wave.png" id="5_wa5vo"]
+[ext_resource type="Texture2D" uid="uid://clwn3ahodhdf6" path="res://Sprites/Enemies/dasher.png" id="8_xbx6x"]
+[ext_resource type="Texture2D" uid="uid://cl430lyy35lkw" path="res://Sprites/Enemies/gattlingGunner.png" id="9_gs353"]
+
+[node name="Help" type="Node2D"]
+script = ExtResource("1_hhb11")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 2161.0
+offset_bottom = 1250.0
+color = Color(0, 0, 0, 1)
+
+[node name="Buttons" type="Node2D" parent="."]
+
+[node name="Controls" type="Node2D" parent="."]
+visible = false
+
+[node name="Label" type="Label" parent="Controls"]
+offset_left = 600.0
+offset_top = 51.0
+offset_right = 1211.0
+offset_bottom = 772.0
+theme_override_font_sizes/font_size = 40
+text = "Mouse/Keyboard
+
+WASD - move
+Left Click or [ - Ability 1
+Right Click or ] - Ability 2
+Shift - Ability 3
+Space - Ability 4
+
+ESC - pause
+"
+
+[node name="Label2" type="Label" parent="Controls"]
+offset_left = 1300.0
+offset_top = 51.0
+offset_right = 1547.0
+offset_bottom = 120.0
+theme_override_font_sizes/font_size = 40
+text = "Controller
+
+Left Stick - move
+A or Cross - Ability 1
+B or Circle - Ability 2
+X or Square - Ability 3
+Y or Triangle - Ability 4
+
+(letters based on xbox
+controller)"
+
+[node name="Abilities1" type="Node2D" parent="."]
+position = Vector2(-8, -20)
+
+[node name="Label" type="Label" parent="Abilities1"]
+offset_left = 747.0
+offset_top = 43.0
+offset_right = 1922.0
+offset_bottom = 1091.0
+theme_override_font_sizes/font_size = 40
+text = "Ability 1
+Destroys projectiles within 350 units of the player.
+NOTE: lasers are not projectiles
+Cooldown - 7 seconds
+
+                                         Projectiles:
+
+
+
+Ability 2
+Jams all enemies within 350 units of the player for 3 seconds.
+While jammed, enemies cannot attack and appear blue.
+Cooldown - 7 seconds
+
+                Normal:                                        Jammed:"
+autowrap_mode = 2
+
+[node name="A1variant" type="Node2D" parent="Abilities1"]
+position = Vector2(-24, 13)
+scale = Vector2(2, 2)
+
+[node name="Wave" type="Sprite2D" parent="Abilities1/A1variant"]
+position = Vector2(585, 222)
+texture = ExtResource("5_wa5vo")
+
+[node name="Projectile" type="Sprite2D" parent="Abilities1/A1variant"]
+position = Vector2(669, 212.5)
+texture = ExtResource("4_1d104")
+
+[node name="A1" type="Node2D" parent="Abilities1"]
+visible = false
+position = Vector2(280, 120)
+scale = Vector2(0.8, 0.8)
+
+[node name="PlayerFill" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1185, 360)
+texture = ExtResource("2_icpsg")
+
+[node name="Circle300" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1185, 360)
+texture = ExtResource("3_os3eh")
+
+[node name="Projectile" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(988, 299)
+texture = ExtResource("4_1d104")
+
+[node name="Projectile2" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1011, 367)
+texture = ExtResource("4_1d104")
+
+[node name="Projectile3" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1022, 430)
+texture = ExtResource("4_1d104")
+
+[node name="Projectile5" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(933, 340)
+texture = ExtResource("4_1d104")
+
+[node name="Projectile6" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(952, 400)
+texture = ExtResource("4_1d104")
+
+[node name="Projectile4" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1038, 266)
+texture = ExtResource("4_1d104")
+
+[node name="Projectile7" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(944, 258)
+texture = ExtResource("4_1d104")
+
+[node name="Projectile8" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(912, 440)
+texture = ExtResource("4_1d104")
+
+[node name="Projectile9" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1046, 480)
+texture = ExtResource("4_1d104")
+
+[node name="Wave" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1444, 382)
+rotation = 3.83972
+texture = ExtResource("5_wa5vo")
+
+[node name="Wave2" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1364, 343)
+rotation = 3.83972
+texture = ExtResource("5_wa5vo")
+
+[node name="Wave3" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1335, 276)
+rotation = 3.83972
+texture = ExtResource("5_wa5vo")
+
+[node name="Wave4" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1409, 299)
+rotation = 3.83972
+texture = ExtResource("5_wa5vo")
+
+[node name="Wave5" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1355, 418)
+rotation = 3.83972
+texture = ExtResource("5_wa5vo")
+
+[node name="Wave6" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1399, 444)
+rotation = 3.83972
+texture = ExtResource("5_wa5vo")
+
+[node name="Wave7" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1408, 368)
+rotation = 3.83972
+texture = ExtResource("5_wa5vo")
+
+[node name="Wave8" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1375, 239)
+rotation = 3.83972
+texture = ExtResource("5_wa5vo")
+
+[node name="Wave9" type="Sprite2D" parent="Abilities1/A1"]
+position = Vector2(1453, 311)
+rotation = 3.83972
+texture = ExtResource("5_wa5vo")
+
+[node name="Ability1" type="Sprite2D" parent="Abilities1"]
+position = Vector2(667, 113)
+texture = ExtResource("2_v63im")
+
+[node name="Ability2" type="Sprite2D" parent="Abilities1"]
+position = Vector2(664, 625)
+texture = ExtResource("3_kfka8")
+
+[node name="A2" type="Node2D" parent="Abilities1"]
+position = Vector2(-6, 25)
+scale = Vector2(2, 2)
+
+[node name="Dasher" type="Sprite2D" parent="Abilities1/A2"]
+position = Vector2(441.5, 473)
+texture = ExtResource("8_xbx6x")
+
+[node name="GattlingGunner" type="Sprite2D" parent="Abilities1/A2"]
+position = Vector2(567.5, 473.5)
+texture = ExtResource("9_gs353")
+
+[node name="A2Jam" type="Node2D" parent="Abilities1"]
+position = Vector2(555, 34)
+scale = Vector2(2, 2)
+
+[node name="Dasher" type="Sprite2D" parent="Abilities1/A2Jam"]
+position = Vector2(441.5, 473)
+texture = ExtResource("8_xbx6x")
+
+[node name="GattlingGunner" type="Sprite2D" parent="Abilities1/A2Jam"]
+position = Vector2(567.5, 473.5)
+texture = ExtResource("9_gs353")
+
+[node name="Abilities2" type="Node2D" parent="."]
+visible = false
+
+[node name="Label" type="Label" parent="Abilities2"]
+offset_left = 745.0
+offset_top = 32.0
+offset_right = 2013.0
+offset_bottom = 435.0
+theme_override_font_sizes/font_size = 40
+text = "Ability 3
+The player is invincible and moves 1.5x faster for 2 seconds.
+Cooldown - 10 seconds
+
+Ability 4
+Destroys all enemies and projectiles within 300 units of the player.
+Cooldown - 50 seconds"

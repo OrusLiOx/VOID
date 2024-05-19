@@ -13,12 +13,13 @@ func _ready():
 	meter = $ColorRect
 	chargesLabel = $Charges
 	sprite = $Sprite2D
+	$Sprite2D/Sprite2D.texture = load("res://Sprites/Player/ability"+str(ability+1)+".png")
 	
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if wait:
 		if Globals.player != null:
 			wait = false

@@ -27,12 +27,6 @@ collision_mask = 7
 position = Vector2(1622.5, 679.5)
 shape = SubResource("RectangleShape2D_npagf")
 
-[node name="Background" type="ColorRect" parent="."]
-z_index = -5
-offset_right = 1920.0
-offset_bottom = 1080.0
-color = Color(0, 0, 0, 1)
-
 [node name="Boundaries" type="Node2D" parent="."]
 
 [node name="Left" type="StaticBody2D" parent="Boundaries"]
@@ -66,7 +60,7 @@ shape = SubResource("RectangleShape2D_m70uc")
 
 [node name="Player" parent="." node_paths=PackedStringArray("holdAbilities") instance=ExtResource("1_cp43h")]
 z_index = 1
-position = Vector2(884, 591)
+position = Vector2(892, 1487)
 holdAbilities = NodePath("../PlayerCasts")
 
 [node name="holdProjectiles" type="Node2D" parent="."]
@@ -150,24 +144,23 @@ offset_bottom = 1100.0
 offset_left = -4.0
 offset_bottom = 1100.0
 
-[node name="Pause" type="ColorRect" parent="."]
-visible = false
+[node name="WaveTimer" type="Timer" parent="."]
+
+[node name="Update" type="ColorRect" parent="."]
 z_index = 10
-offset_right = 2101.0
-offset_bottom = 1154.0
+offset_right = 2272.0
+offset_bottom = 1312.0
 color = Color(0, 0, 0, 0.552941)
 
-[node name="Label" type="Label" parent="Pause"]
+[node name="Label" type="Label" parent="Update"]
 layout_mode = 0
 offset_left = 124.0
 offset_right = 1920.0
 offset_bottom = 1080.0
 theme_override_font_sizes/font_size = 100
-text = "PAUSE"
+text = "Wave Complete"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="WaveTimer" type="Timer" parent="."]
 
 [connection signal="area_exited" from="validZone" to="." method="_on_valid_zone_area_exited"]
 [connection signal="update_health" from="Player" to="." method="_on_player_update_health"]

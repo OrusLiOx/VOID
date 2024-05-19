@@ -1,21 +1,19 @@
 extends Node2D
-var spawned
 var spikes = 6
 var rot
-var spawnRot =0
+var startRot
 var proj:PackedScene
 var timer
 var sprite
 var canFire
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
+func spawn():
+	startRot = randf_range(0,PI/spikes)
 	rot = 0
 	proj = load("res://Scenes/Enemies/_Generic/projectile.tscn")
-	spawned = false
 	canFire = false
 	
-	sprite = $Base
+	sprite = $Sprite2D
 	timer = $Timer
 	timer.start(.8/spikes)
 	pass # Replace with function body.
@@ -23,6 +21,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if Globals.enemyPause:
+		return
 	var newRot = sprite.rotation+delta*PI/2
 	if newRot < rot:
 		sprite.rotation = newRot
@@ -46,25 +46,9 @@ func launch_wave():
 
 func _on_timer_timeout():
 	timer.stop()
-	# spawn spikes
-	if !spawned:
-		var child = Sprite2D.new()
-		child.texture = load("res://Sprites/Enemies/projectile.png")
-		sprite.add_child(child)
-		child.rotation = spawnRot
-		spawnRot += 2*PI/spikes
-		if sprite.get_children().size() == spikes:
-			spawned = true
-			canFire = true
-			rot = PI/spikes
-		else:
-			timer.start(.8/spikes)
-	else:
-		rot += PI/spikes
-		if rot > 2*PI:
-			rot -= 2*PI
-			sprite.rotation -=2*PI
-		canFire = true
-		pass
-	pass # Replace with function body.
+	rot += PI/spikes
+	if rot > 2*PI:
+		rot -= 2*PI
+		sprite.rotation -=2*PI
+	canFire = true
 	

@@ -4,6 +4,10 @@ var dangerColor
 var normalColor
 var player
 var holdProj
+var enemyPause = true
+
+var lives = 1
+var infiniteLives
 
 func _ready():
 	set_color_type("color")
@@ -28,7 +32,7 @@ func set_color_type(type):
 			normalColor = Color("ffffff")
 
 func add_colors(c1,c2, weight =.5):
-	var color:Color
+	var color:Color = c1
 	color.r = c1.r*weight + c2.r*(1-weight)
 	color.g = c1.g*weight + c2.g*(1-weight)
 	color.b = c1.b*weight + c2.b*(1-weight)

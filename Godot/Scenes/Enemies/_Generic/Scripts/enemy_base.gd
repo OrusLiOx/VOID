@@ -30,10 +30,13 @@ func remove_jam(obj):
 		unjam()
 
 func unjam():
+	var change = false
 	if is_jammed == true:
-		emit_signal("unjammed")
+		change = true
 	is_jammed = false
-	var color = Color.WHITE
+	var color = Globals.normalColor
 	color.a = get_parent().modulate.a
 	get_parent().modulate = color
+	if change:
+		emit_signal("unjammed")
 

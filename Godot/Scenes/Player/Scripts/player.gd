@@ -7,9 +7,10 @@ var invTimer:Timer
 var hp = 5
 var hpMax = 5
 var healthBar
+var canAbility
 
 var a:Dictionary
-var charges:Array 
+var charges:Array
 var zone
 var cd:Array
 @export var holdAbilities:Node
@@ -22,14 +23,14 @@ func _ready():
 	a = {
 		0:
 		{
-			"range": 300,
-			"duration": 3,
+			"range": 350,
+			"duration": 0,
 			"cooldown":7,
-			"charges":2
+			"charges":1
 		},
 		1:
 		{
-			"range": 300,
+			"range": 350,
 			"duration": 0,
 			"cooldown":7,
 			"effectDuration":3,
@@ -58,7 +59,28 @@ func _ready():
 		charges.push_back(a[i]["charges"])
 	Globals.player = self
 	healthBar = $Health
+	canAbility = false
 
+func reset():
+	position.x = (124+1920)/2
+	position.y = (0+1080)/2
+	for i in 4:
+		charges[i] = a[i]["charges"]
+		cd[i].stop()
+		cd[i].start(.001)
+	
+	speed = 300.0
+	iframes = 0
+	inv = false
+	hp = 5
+	hpMax = 5
+	
+	emit_signal("update_health", hp, hpMax)
+	visible = true
+
+func heal(amount = hpMax):
+	hp = min(hpMax, hp+amount)
+	
 func _process(delta):
 	process_ability_select()
 	
@@ -74,30 +96,30 @@ func _process(delta):
 
 func _physics_process(_delta):
 	# Move
-	velocity = Input.get_vector("Left","Right","Up","Down")*speed 
+	velocity = Input.get_vector("Left","Right","Up","Down")*speed
 		
 	move_and_slide()
 
 # on take damage stuff
 func die():
-	print("die")
+	inv = true
+	visible = false
 	pass
 
 func hit(damage):
 	if iframes >0:
 		return
-	hp = max(0, hp-damage) 
+	hp = max(0, hp-damage)
 	healthBar.size.y = 42*hp/hpMax
+	iframes = .5
 	if hp <=0:
 		die()
-		return
-	iframes = 1
 	emit_signal("update_health", hp, hpMax)
 
 func _on_area_2d_area_entered(area):
 	if area.is_in_group("Projectile"):
 		area.queue_free()
-	if area.name == "validZone" or iframes>0 or inv:
+	if area.name == "validZone" or iframes>0 or inv or !invTimer.is_stopped():
 		return
 		
 	hit(1)
@@ -110,7 +132,7 @@ func process_ability_select():
 			cast_ability(i)
 			
 func cast_ability(ability):
-	if charges[ability] <= 0:
+	if charges[ability] <= 0 or !canAbility:
 		return
 	charges[ability] -= 1
 	if cd[ability].is_stopped():
@@ -126,7 +148,8 @@ func cast_ability(ability):
 			cast3()
 
 func cd_timeout(ability):
-	charges[ability]+=1
+	if charges[ability]<a[ability]["charges"]:
+		charges[ability]+=1
 	if charges[ability]<a[ability]["charges"]:
 		cd[ability].start(a[ability]["cooldown"])
 	else:
@@ -147,7 +170,6 @@ func cast1():
 	pass
 	
 func cast2():
-	inv = true
 	modulate.a = .6
 	speed *= a[2]["speedup"]
 	invTimer.stop()
@@ -158,7 +180,6 @@ func _on_invincibility_timeout():
 	modulate.a = 1
 	speed /= a[2]["speedup"]
 	invTimer.stop()
-	inv = false
 	
 	pass # Replace with function body.
 
@@ -169,3 +190,10 @@ func cast3():
 	cast.set_stuff(a[3]["range"], a[3]["duration"], "kill")
 	pass
 
+func pause_cooldowns():
+	for timer in cd:
+		timer.set_paused(true)
+		
+func continue_cooldowns():
+	for timer in cd:
+		timer.set_paused(false)

@@ -1,0 +1,133 @@
+[gd_scene load_steps=10 format=3 uid="uid://u25dgbyqs3rg"]
+
+[ext_resource type="Script" path="res://Scenes/Scripts/title.gd" id="1_7pphj"]
+[ext_resource type="Texture2D" uid="uid://2feemrq8mq5" path="res://Sprites/Player/PlayerFill.png" id="1_rrqlm"]
+[ext_resource type="Theme" uid="uid://cedwkvggr4pcc" path="res://Themes/MenuButton.tres" id="2_ielin"]
+[ext_resource type="Texture2D" uid="uid://cl430lyy35lkw" path="res://Sprites/Enemies/gattlingGunner.png" id="2_vkax2"]
+[ext_resource type="Texture2D" uid="uid://clwn3ahodhdf6" path="res://Sprites/Enemies/dasher.png" id="3_ykgtb"]
+[ext_resource type="Texture2D" uid="uid://csxr85ua61wrs" path="res://Sprites/Enemies/spikeBall.png" id="4_xt2nf"]
+[ext_resource type="Texture2D" uid="uid://bbj43tv2yos7n" path="res://Sprites/Enemies/spikeBallBase.png" id="5_brdrh"]
+[ext_resource type="Texture2D" uid="uid://bcgn8xnpl8yhp" path="res://Sprites/Enemies/spinLaser.png" id="6_wg2r8"]
+[ext_resource type="Texture2D" uid="uid://mhiumy8dsr0v" path="res://Sprites/Enemies/gunner.png" id="7_4nlok"]
+
+[node name="Title" type="Node2D"]
+script = ExtResource("1_7pphj")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 1920.0
+offset_bottom = 449.0
+theme_override_font_sizes/font_size = 100
+text = "VOID"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(710, 450)
+
+[node name="Start" type="Button" parent="Node2D"]
+offset_right = 500.0
+offset_bottom = 150.0
+theme = ExtResource("2_ielin")
+theme_override_font_sizes/font_size = 50
+text = "Start"
+
+[node name="Settings" type="Button" parent="Node2D"]
+offset_top = 200.0
+offset_right = 500.0
+offset_bottom = 350.0
+theme = ExtResource("2_ielin")
+theme_override_font_sizes/font_size = 50
+text = "Settings"
+
+[node name="Help" type="Button" parent="Node2D"]
+offset_top = 400.0
+offset_right = 500.0
+offset_bottom = 550.0
+theme = ExtResource("2_ielin")
+theme_override_font_sizes/font_size = 50
+text = "Help"
+
+[node name="Player" type="Sprite2D" parent="."]
+position = Vector2(963, 355)
+texture = ExtResource("1_rrqlm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(51, 51)
+rotation = 0.424115
+texture = ExtResource("2_vkax2")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(1871, 50)
+rotation = -3.80831
+texture = ExtResource("2_vkax2")
+
+[node name="Dasher" type="Sprite2D" parent="."]
+position = Vector2(343, 428)
+texture = ExtResource("3_ykgtb")
+
+[node name="Dasher4" type="Sprite2D" parent="."]
+position = Vector2(338, 283)
+texture = ExtResource("3_ykgtb")
+
+[node name="Dasher2" type="Sprite2D" parent="."]
+position = Vector2(432, 354)
+texture = ExtResource("3_ykgtb")
+
+[node name="Dasher3" type="Sprite2D" parent="."]
+position = Vector2(234, 471)
+texture = ExtResource("3_ykgtb")
+
+[node name="Dasher5" type="Sprite2D" parent="."]
+position = Vector2(235, 226)
+texture = ExtResource("3_ykgtb")
+
+[node name="SpikeBall" type="Sprite2D" parent="."]
+position = Vector2(1499, 857)
+texture = ExtResource("4_xt2nf")
+
+[node name="SpikeBallBase" type="Sprite2D" parent="SpikeBall"]
+texture = ExtResource("5_brdrh")
+
+[node name="SpikeBall2" type="Sprite2D" parent="."]
+position = Vector2(1386, 712)
+texture = ExtResource("4_xt2nf")
+
+[node name="SpikeBallBase" type="Sprite2D" parent="SpikeBall2"]
+texture = ExtResource("5_brdrh")
+
+[node name="SpikeBall3" type="Sprite2D" parent="."]
+position = Vector2(1677, 917)
+texture = ExtResource("4_xt2nf")
+
+[node name="SpikeBallBase" type="Sprite2D" parent="SpikeBall3"]
+texture = ExtResource("5_brdrh")
+
+[node name="SpikeBall4" type="Sprite2D" parent="."]
+position = Vector2(1704, 717)
+texture = ExtResource("4_xt2nf")
+
+[node name="SpikeBallBase" type="Sprite2D" parent="SpikeBall4"]
+texture = ExtResource("5_brdrh")
+
+[node name="SpinLaser" type="Sprite2D" parent="."]
+position = Vector2(304, 841)
+texture = ExtResource("6_wg2r8")
+
+[node name="Gunner" type="Sprite2D" parent="."]
+position = Vector2(1498, 426)
+rotation = -2.87979
+texture = ExtResource("7_4nlok")
+
+[node name="Gunner2" type="Sprite2D" parent="."]
+position = Vector2(1398, 244)
+rotation = -3.40339
+texture = ExtResource("7_4nlok")
+
+[node name="Gunner3" type="Sprite2D" parent="."]
+position = Vector2(1638, 270)
+rotation = -3.14159
+texture = ExtResource("7_4nlok")
+
+[connection signal="button_down" from="Node2D/Start" to="." method="_on_start_button_down"]
+[connection signal="button_down" from="Node2D/Settings" to="." method="_on_settings_button_down"]
+[connection signal="button_down" from="Node2D/Help" to="." method="_on_help_button_down"]

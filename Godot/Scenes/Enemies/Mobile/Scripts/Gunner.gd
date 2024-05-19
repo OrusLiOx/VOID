@@ -1,21 +1,32 @@
 extends Node2D
 var projectile
 var timer
+var dist
+var speed
+var targetOffset
+var fireRate
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func spawn():
 	projectile = load("res://Scenes/Enemies/_Generic/projectile.tscn")
 	timer = $Timer
+	dist = randf_range(400,600)
+	speed = randf_range(125,175)
+	targetOffset = Vector2(randf_range(-50,50),randf_range(-50,50))
+	fireRate = randf_range(1.7,2.7)
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	rotation = global_position.direction_to(Globals.player.global_position).angle()
-	if position.distance_to(Globals.player.position) > 500:
-		position += global_position.direction_to(Globals.player.global_position)*delta*150
+	if Globals.enemyPause:
+		return
+		
+	rotation = global_position.direction_to(Globals.player.global_position+targetOffset).angle()
+	if position.distance_to(Globals.player.position+targetOffset) > dist:
+		position += global_position.direction_to(Globals.player.global_position+targetOffset)*delta*speed
 	if timer.is_stopped():
-		timer.start(2)
+		timer.start(fireRate)
 	pass
 	
 func fire():
