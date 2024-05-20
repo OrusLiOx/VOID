@@ -46,6 +46,7 @@ offset_right = 896.0
 offset_bottom = 84.0
 
 [node name="InfiniteLives" type="CheckBox" parent="Node2D/infiniteLives"]
+layout_mode = 0
 offset_left = 797.0
 offset_top = -15.0
 offset_right = 813.0
@@ -78,6 +79,7 @@ theme_override_font_sizes/font_size = 30
 text = "(changes take effect at the start of the next run)"
 
 [node name="LineEdit" type="LineEdit" parent="Node2D/lives"]
+layout_mode = 0
 offset_left = 738.0
 offset_top = 5.0
 offset_right = 930.0
@@ -102,6 +104,7 @@ offset_bottom = 50.0
 color = Color(0.588235, 0.588235, 0.588235, 1)
 
 [node name="HSlider" type="HSlider" parent="Node2D/Volume"]
+layout_mode = 0
 offset_left = 242.0
 offset_top = 37.0
 offset_right = 921.0

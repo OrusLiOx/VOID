@@ -4,9 +4,10 @@ var current
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	current = $Controls
 	var list={
 		"Controls" : $Controls,
+		"Basics":$Basics,
+		"Health & Damage": $Health_Enemies,
 		"Abilities Part 1": $Abilities1,
 		"Abilities Part 2": $Abilities2
 	}
@@ -18,10 +19,11 @@ func _ready():
 		$Buttons.add_child(child)
 		child.size = Vector2(500,150)
 		child.position = Vector2(0,y)
-		y+=200
+		y+=150
 		child.text = name
 		child.button_down.connect(load_menu.bind(list[name]))
 		child.theme = theme
+		list[name].visible = false
 	
 	var child = Button.new()
 	$Buttons.add_child(child)
@@ -31,9 +33,12 @@ func _ready():
 	child.button_down.connect(exit)
 	child.theme = theme
 	
-	
 	$Abilities1/A1variant.modulate = Globals.dangerColor
 	$Abilities1/A2Jam.modulate = Globals.jammedColor
+	$Health_Enemies/Colors/red.modulate = Globals.dangerColor
+	
+	current = $Controls
+	$Controls.visible = true
 	pass # Replace with function body.
 
 func exit():

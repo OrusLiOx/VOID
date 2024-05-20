@@ -133,7 +133,7 @@ offset_bottom = 436.0
 rotation = 3.14159
 
 [node name="Health" type="Node2D" parent="Hud"]
-position = Vector2(35, 1044)
+position = Vector2(60, 1045)
 
 [node name="ColorRect" type="ColorRect" parent="Hud"]
 offset_left = 120.0

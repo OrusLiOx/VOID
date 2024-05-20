@@ -32,9 +32,9 @@ func _process(_delta):
 		else:
 			meter.size.y = 100* current.time_left/cd
 		if charges[ability] > 0:
-			sprite.self_modulate = Color.WHITE
+			sprite.modulate = Color.WHITE
 		else:
-			sprite.self_modulate = Color(.5,.5,.5)
+			sprite.modulate = Color(.5,.5,.5)
 		if Globals.player.a[ability]["charges"]>1:
 			chargesLabel.text = str(charges[ability])
 		else:

@@ -76,10 +76,14 @@ func reset():
 	hpMax = 5
 	
 	emit_signal("update_health", hp, hpMax)
+	healthBar.size.y = 42*hp/hpMax
 	visible = true
 
 func heal(amount = hpMax):
 	hp = min(hpMax, hp+amount)
+	emit_signal("update_health", hp, hpMax)
+	healthBar.size.y = 42*hp/hpMax
+
 	
 func _process(delta):
 	process_ability_select()

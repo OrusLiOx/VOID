@@ -201,6 +201,7 @@ func wave_end():
 	Globals.player.canAbility = false
 	Globals.player.inv = true
 	Globals.player.pause_cooldowns()
+	Globals.player.heal(1)
 	for child in $holdProjectiles.get_children():
 		child.queue_free()
 	for child in holdEnemies.get_children():
