@@ -9,6 +9,8 @@ var enemyPause = true
 var lives = 1
 var infiniteLives
 
+var upgrades
+
 func _ready():
 	set_color_type("color")
 

@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3nxvcnun2ymg"]
+
+[ext_resource type="Texture2D" uid="uid://bm13gxdvnr38g" path="res://Sprites/Player/upgradeBox.png" id="1_n4nl6"]
+
+[node name="UpgradeChoice" type="Node2D"]
+
+[node name="UpgradeBox" type="Sprite2D" parent="."]
+position = Vector2(192, 500)
+texture = ExtResource("1_n4nl6")
+
+[node name="Name" type="Label" parent="."]
+offset_left = 4.0
+offset_top = 5.0
+offset_right = 380.0
+offset_bottom = 233.0
+theme_override_font_sizes/font_size = 50
+text = "Pick 3 Next Wave
+"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Description" type="Label" parent="."]
+offset_left = 22.0
+offset_top = 223.0
+offset_right = 351.0
+offset_bottom = 589.0
+theme_override_font_sizes/font_size = 40
+text = "Increase duration of ability 1 by 50.
+
+Current: 5 s
+New: 400"
+autowrap_mode = 2

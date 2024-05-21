@@ -80,6 +80,8 @@ func _ready():
 
 func start():
 	Globals.player.reset()
+	Globals.upgrades = $Upgrades
+	$Upgrades.reset()
 	
 	lives = Globals.lives
 	for child in $holdProjectiles.get_children():

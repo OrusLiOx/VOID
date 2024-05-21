@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cglbpyq6fsq81"]
+[gd_scene load_steps=9 format=3 uid="uid://cglbpyq6fsq81"]
 
 [ext_resource type="PackedScene" uid="uid://dnaqej8yhbeu8" path="res://Scenes/Player/player.tscn" id="1_cp43h"]
 [ext_resource type="Script" path="res://Scenes/Scripts/game.gd" id="1_dbkqe"]
 [ext_resource type="PackedScene" uid="uid://c7umn3wpd4dbn" path="res://Scenes/Player/ability_visual.tscn" id="2_y0ouu"]
+[ext_resource type="PackedScene" uid="uid://brxi1n0ij6ls2" path="res://Scenes/upgrades.tscn" id="4_icubv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npagf"]
 size = Vector2(2997, 1909)
@@ -161,6 +162,8 @@ theme_override_font_sizes/font_size = 100
 text = "Wave Complete"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Upgrades" parent="." instance=ExtResource("4_icubv")]
 
 [connection signal="area_exited" from="validZone" to="." method="_on_valid_zone_area_exited"]
 [connection signal="update_health" from="Player" to="." method="_on_player_update_health"]
