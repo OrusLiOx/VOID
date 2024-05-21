@@ -148,6 +148,7 @@ offset_bottom = 1100.0
 [node name="WaveTimer" type="Timer" parent="."]
 
 [node name="Update" type="ColorRect" parent="."]
+visible = false
 z_index = 10
 offset_right = 2272.0
 offset_bottom = 1312.0
@@ -164,7 +165,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Upgrades" parent="." instance=ExtResource("4_icubv")]
+z_index = 10
+position = Vector2(71, 9)
 
 [connection signal="area_exited" from="validZone" to="." method="_on_valid_zone_area_exited"]
 [connection signal="update_health" from="Player" to="." method="_on_player_update_health"]
 [connection signal="timeout" from="WaveTimer" to="." method="_on_wave_timer_timeout"]
+[connection signal="done" from="Upgrades" to="." method="_on_upgrades_done"]

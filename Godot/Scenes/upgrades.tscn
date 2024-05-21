@@ -1,6 +1,39 @@
-[gd_scene load_steps=2 format=3 uid="uid://brxi1n0ij6ls2"]
+[gd_scene load_steps=3 format=3 uid="uid://brxi1n0ij6ls2"]
 
 [ext_resource type="Script" path="res://Scenes/Scripts/upgrades.gd" id="1_v3jvh"]
+[ext_resource type="PackedScene" uid="uid://b3nxvcnun2ymg" path="res://Scenes/upgrade_choice.tscn" id="2_hfnah"]
 
 [node name="Upgrades" type="Node2D"]
 script = ExtResource("1_v3jvh")
+
+[node name="UpgradeChoiceDisplay" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="UpgradeChoiceDisplay"]
+offset_top = 30.0
+offset_right = 1920.0
+offset_bottom = 215.0
+theme_override_font_sizes/font_size = 50
+text = "Pick One"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="UpgradeChoiceDisplay"]
+offset_left = -2.0
+offset_top = 111.0
+offset_right = 1918.0
+offset_bottom = 296.0
+theme_override_font_sizes/font_size = 40
+text = "New perks will be drawn for your next choice"
+horizontal_alignment = 1
+
+[node name="Buttons" type="Node2D" parent="UpgradeChoiceDisplay"]
+position = Vector2(318, 220)
+
+[node name="UpgradeChoice" parent="UpgradeChoiceDisplay/Buttons" instance=ExtResource("2_hfnah")]
+
+[node name="UpgradeChoice2" parent="UpgradeChoiceDisplay/Buttons" instance=ExtResource("2_hfnah")]
+offset_left = 450.0
+offset_right = 834.0
+
+[node name="UpgradeChoice3" parent="UpgradeChoiceDisplay/Buttons" instance=ExtResource("2_hfnah")]
+offset_left = 900.0
+offset_right = 1284.0

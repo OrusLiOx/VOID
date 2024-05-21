@@ -81,6 +81,7 @@ func _ready():
 func start():
 	Globals.player.reset()
 	Globals.upgrades = $Upgrades
+	$Upgrades.visible = false
 	$Upgrades.reset()
 	
 	lives = Globals.lives
@@ -89,7 +90,7 @@ func start():
 	for child in holdEnemies.get_children():
 		child.queue_free()
 	wave = 0
-	waveLength = 30
+	waveLength = 10
 	waveWait = 5
 	waveWeight = 14
 	enemyTypes = 3
@@ -230,7 +231,8 @@ func _on_wave_timer_timeout():
 			$Update/Label.text = "Wave Complete"
 			wave_end()
 		"end wave":
-			start_wave()
+			$Update.visible = false
+			$Upgrades.start_upgrade_select()
 	pass # Replace with function body.
 
 func spawn_wave():
@@ -295,3 +297,9 @@ func reset_spawns():
 		Vector2(1870,1030),
 		Vector2(174,1030)
 	]
+
+func _on_upgrades_done():
+	print("\nwave " + str(wave))
+	$Upgrades.print_upgrades()
+	start_wave()
+	pass # Replace with function body.

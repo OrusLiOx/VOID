@@ -114,7 +114,7 @@ func hit(damage):
 		return
 	hp = max(0, hp-damage)
 	healthBar.size.y = 42*hp/hpMax
-	iframes = .5
+	iframes = .5 + Globals.upgrades.have["iframes"]
 	if hp <=0:
 		die()
 	emit_signal("update_health", hp, hpMax)

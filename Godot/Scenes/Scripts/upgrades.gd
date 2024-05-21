@@ -5,6 +5,39 @@ var have : Dictionary
 var temp : Dictionary
 var item : String
 var itemUses : int
+var choices:Array
+var choicesButtons:Node2D
+var choiceLabel:Label
+var take
+var scaling : Dictionary
+
+signal done()
+
+func _ready():
+	choicesButtons = $UpgradeChoiceDisplay/Buttons
+	choiceLabel = $UpgradeChoiceDisplay/Label2
+	var i = 0
+	for child in choicesButtons.get_children():
+		child.button_down.connect(take_upgrade.bind(i))
+		i+=1
+		
+	scaling["iframes"] = .25
+	scaling["speed"] = 50
+	scaling["a3 speedup"] = .2
+	
+	scaling["a1 dur"] = .5
+	scaling["a2 dur"] = .5
+	scaling["a3 dur"] = .5
+	scaling["a4 dur"] = .5
+	
+	scaling["a1 range"] = 50
+	scaling["a2 range"] = 50
+	scaling["a4 range"] = 50
+
+	scaling["a1 cd"] = .5
+	scaling["a2 cd"] = .5
+	scaling["a3 cd"] = .5
+	scaling["a4 cd"] = 5
 
 func reset():
 	temp.clear()
@@ -14,10 +47,11 @@ func reset():
 	item = ""
 	itemUses = 0
 	
-	have["temp dur"] = 1
+	#have["temp dur"] = 1
 	have["item uses"] = 1
 	
 	available.push_back("a4 charge")
+	have["a4 charge"] = 1
 	
 	available.push_back("a1 linger")
 	available.push_back("a2 linger")
@@ -30,19 +64,31 @@ func reset():
 		available.push_back("a2 cd")
 		available.push_back("a3 cd")
 		available.push_back("a4 cd")
+		have["a1 cd"] = 0
+		have["a2 cd"] = 0
+		have["a3 cd"] = 0
+		have["a4 cd"] = 0
 		
 		available.push_back("a1 range")
 		available.push_back("a2 range")
 		available.push_back("a4 range")
+		have["a1 range"] = 0
+		have["a2 range"] = 0
+		have["a4 range"] = 0
 		
 		available.push_back("a3 dur")
+		have["a3 dur"] = 0
 		available.push_back("a3 speedup")
+		have["a3 speedup"] = 0
 		
 		available.push_back("speed")
+		have["speed"] = 0
 		available.push_back("iframes")
+		have["iframes"] = 0
 		available.push_back("item uses")
-		available.push_back("temp dur")
+		#available.push_back("temp dur")
 		available.push_back("health")
+		have["health"] = 0
 	
 	available.push_back("heal")
 	available.push_back("item proj")
@@ -50,14 +96,38 @@ func reset():
 	available.push_back("item cd")
 	available.push_back("item heal")
 	
-	available.push_back("temp pick 3")
-	available.push_back("temp shield")
-	available.push_back("temp short wave")
-	available.push_back("temp range")
-	available.push_back("temp dur")
-	available.push_back("temp cd")
+	available.push_back("pick 3")
+	#available.push_back("temp shield")
+	#available.push_back("temp short wave")
+	#available.push_back("temp range")
+	#available.push_back("temp dur")
+	#available.push_back("temp cd")
 	
-
+func start_upgrade_select():
+	visible = true
+	take = 1
+	if have.has("pick 3"):
+		take = 3
+		have.erase("pick 3")
+	
+	upgrade_select()
+	
+func upgrade_select():
+	if take == 0:
+		visible = false
+		emit_signal("done")
+		return
+		
+	if take>1:
+		choiceLabel.visible = true
+	else:
+		choiceLabel.visible = false
+		
+	choices = pick_rand()
+	var children = choicesButtons.get_children()
+	for j in 3:
+		set_upgrade_display(children[j], choices[j])
+		
 func pick_rand(num = 3):
 	var arr:Array = []
 	
@@ -84,32 +154,15 @@ func set_upgrade_display(obj, upgrade):
 					title+="Persist"
 					desc = "Ability "+ str(i)+ " will persist in the spot you cast it for 1 second"
 				elif upgrade.contains("cd"):
-					var s =.5
-					if i ==4:
-						s = 5
-					var quantity = have[upgrade]
-					title += "Reduce Cooldown +" +str(quantity+1)
-					
-					desc = "Reduce the cooldown of Ability "+str(i)+" by "+str(s)+"s\n\n"
-					quantity = str(Globals.player.a[i]["cooldown"]-(quantity*s))
-					desc+="Current: " + str(quantity) + "s\n"
-					desc +="New: "+str(quantity-s)+"s"
+					title += "Reduce Cooldown +" +str(have[upgrade]+1)
+					desc = get_scaling_upgrade_desc(upgrade, Globals.player.a[i-1]["cooldown"], "Reduce the cooldown of Ability "+str(i)+" by ","s")
 				elif upgrade.contains("range"):
 					var quantity = have[upgrade]
-					title += "Range +" +str(quantity+1)
-					
-					desc = "Increase the range of Ability "+str(i)+" by 50 units\n\n"
-					quantity = str(Globals.player.a[i]["range"]+(quantity*50))
-					desc+="Current: " + str(quantity) + "s\n"
-					desc +="New: "+str(quantity+50)+"s"
+					title += "Range +" +str(have[upgrade]+1)
+					desc = get_scaling_upgrade_desc(upgrade, Globals.player.a[i-1]["range"], "Increase the range of Ability "+str(i)+" by "," units")
 				elif upgrade.contains("dur"):
-					var quantity = have[upgrade]
-					title += "Duration +" +str(quantity+1)
-					
-					desc = "Increase the duration of Ability "+str(i)+" by .5s\n\n"
-					quantity = str(Globals.player.a[i]["range"]+(quantity*50))
-					desc+="Current: " + str(quantity) + "s\n"
-					desc +="New: "+str(quantity+50)+"s"
+					title += "Duration +" +str(have[upgrade]+1)
+					desc = get_scaling_upgrade_desc(upgrade, Globals.player.a[i-1]["duration"], "Increase the duration of Ability "+str(i)+" by ","s")
 				break
 			
 	match upgrade:
@@ -125,48 +178,24 @@ func set_upgrade_display(obj, upgrade):
 			desc = "When the effect of Ability 3 ends, enemies within 300 units of you will be jammed for 3 seconds"
 
 		"a3 speedup":
-			var quantity = have["speed"]
-			title = "Speed Boost +" + str(quantity+1)
-			desc = "Increase speed boost gained from Ability 3 by .2\n\n"
-			quantity = 1.5 + quantity*.2
-			desc+= "Current: x" + str(quantity) +"\n"
-			desc+= "New: x" + str(quantity + .2)
+			title = "Speed Boost +" + str(have["speed"]+1)
+			desc = get_scaling_upgrade_desc(upgrade, Globals.player.a[2]["speedup"], "Increase speed boost gained from Ability 3 by ","")
 		
 		"speed":
-			var quantity = have["speed"]
-			title = "Speed +" + str(quantity+1)
-			desc = "Increase base speed by 50\n\n"
-			quantity =Globals.player.speed + quantity*50
-			desc+= "Current: " + str(quantity) +"\n"
-			desc+= "New: " + str(quantity + 50)
+			title = "Speed +" + str(have["speed"]+1)
+			desc = get_scaling_upgrade_desc(upgrade, Globals.player.speed, "Increase base movement speed by ","")
 		"iframes":
-			var quantity = have["iframes"]
-			title = "Invincibility Frames +" + str(quantity+1)
-			desc = "Increases how long you are invincible after getting hit by .25s\n\n"
-			quantity =Globals.player.speed + quantity*.25
-			desc+= "Current: " + str(quantity) +"s\n"
-			desc+= "New: " + str(quantity + .25)+"s"
+			title = "Invincibility Frames +" + str(have["iframes"]+1)
+			desc = get_scaling_upgrade_desc(upgrade, .5, "Increases how long you are invincible after getting hit by ","s")
 		"item uses":
-			var quantity = have["item uses"]
-			title = "Item Uses  +" + str(quantity+1)
-			desc = "Increase how mnay times you can use items by 1\n\n"
-			quantity = Globals.player.speed + quantity*50
-			desc+= "Current: " + str(quantity) +"\n"
-			desc+= "New: " + str(quantity + 50)
+			title = "Item Uses  +" + str(itemUses)
+			desc = get_scaling_upgrade_desc(upgrade, 1, "Increase how mnay times you can use items by ","")
 		"temp dur":
-			var quantity = have["temp dur"]
-			title = "Temporary Effect Duration  +" + str(quantity+1)
-			desc = "Increases how many waves temporary effects last for by 1\n\n"
-			quantity =Globals.player.speed + quantity
-			desc+= "Current: " + str(quantity) +" waves\n"
-			desc+= "New: " + str(quantity + 1) + " waves"
+			title = "Temporary Effect Duration  +" + str(have["temp dur"]+1)
+			desc = get_scaling_upgrade_desc(upgrade, 1, "Increases how many waves temporary effects last for by "," waves")
 		"health":
-			var quantity = have["health"]
-			title = "Health  +" + str(quantity+1)
-			desc = "Increases maximum health by 1\n\n"
-			quantity = 5 + quantity
-			desc+= "Current: " + str(quantity) +"\n"
-			desc+= "New: " + str(quantity + 1)
+			title = "Health  +" + str(have["health"]+1)
+			desc = get_scaling_upgrade_desc(upgrade, 5, "Increases maximum health by ","")
 		"heal":
 			title = "Heal"
 			desc = "Heal to full health"
@@ -184,7 +213,7 @@ func set_upgrade_display(obj, upgrade):
 			title += "Jam"
 			desc = "Heals 3 health on use\n\n"
 		
-		"temp pick 3":
+		"pick 3":
 			title+="Pick 3 Next Wave"
 			desc = "At the end of the next wave, you get 3 perks instead of 1\n\n"
 		"temp shield":
@@ -216,14 +245,38 @@ func set_upgrade_display(obj, upgrade):
 		elif child.name == "Description":
 			child.text = desc
 
-func take_perk(upgrade):
-	if upgrade.contains("temp") and upgrade != "temp dur":
+func get_scaling_upgrade_desc(upgrade, baseValue = 0, startText ="", unit = ""):
+	var s
+	if !scaling.has(upgrade):
+		s = 1
+	else:
+		s = scaling[upgrade]
+		
+	var desc = ""
+	var quantity = baseValue + s*have[upgrade]
+				
+	desc = startText + str(s) + unit + "\n\n"
+	
+	if upgrade == "a3 speedup":
+		desc += "Current: x" + str(quantity) + unit+"\n"
+		desc += "New: x" + str(quantity+s) + unit
+	else:
+		desc += "Current: " + str(quantity) + unit+"\n"
+		desc += "New: " + str(quantity+s) + unit
+	
+	return desc
+	pass
+
+func take_upgrade(upgrade):
+	take -=1
+	upgrade = choices[upgrade]
+	if upgrade.find("temp")!=-1 and upgrade != "temp dur":
 		if temp.keys().find(upgrade) != -1:
 			temp[upgrade] += have["temp dur"]
 		else:
 			temp[upgrade] = have["temp dur"]
 	
-	elif upgrade.contains("item") and upgrade != "item uses":
+	elif upgrade.find("item")!=-1 and upgrade != "item uses":
 		item = upgrade
 		itemUses = have["item uses"]
 	else:
@@ -231,3 +284,14 @@ func take_perk(upgrade):
 			have[upgrade] += 1
 		else:
 			have[upgrade] = 1
+	
+	upgrade_select()
+
+func print_upgrades():
+	print("{")
+	for key in have.keys():
+		print("\t" + key + ": " + str(have[key]))
+	print()
+	for key in temp.keys():
+		print("\t" + key + ": " + str(temp[key]))
+	print("}")
