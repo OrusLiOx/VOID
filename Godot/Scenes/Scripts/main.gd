@@ -18,7 +18,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if queueUnpause == 0:
 		queueUnpause = 1
 	elif queueUnpause == 1:

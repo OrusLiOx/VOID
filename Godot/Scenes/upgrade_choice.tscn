@@ -12,6 +12,7 @@ position = Vector2(192, 500)
 texture = ExtResource("1_n4nl6")
 
 [node name="Name" type="Label" parent="."]
+layout_mode = 0
 offset_left = 4.0
 offset_top = 5.0
 offset_right = 380.0
@@ -20,9 +21,11 @@ theme_override_font_sizes/font_size = 50
 text = "Pick 3 Next Wave
 "
 horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Description" type="Label" parent="."]
+layout_mode = 0
 offset_left = 22.0
 offset_top = 223.0
 offset_right = 351.0

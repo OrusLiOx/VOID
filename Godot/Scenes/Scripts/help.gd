@@ -13,19 +13,19 @@ func _ready():
 	}
 	var y = 0
 	var theme = load("res://Themes/MenuButton.tres")
-	
-	for name in list.keys():
-		var child = Button.new()
+	var child
+	for key in list.keys():
+		child = Button.new()
 		$Buttons.add_child(child)
 		child.size = Vector2(500,150)
 		child.position = Vector2(0,y)
 		y+=150
-		child.text = name
-		child.button_down.connect(load_menu.bind(list[name]))
+		child.text = key
+		child.button_down.connect(load_menu.bind(list[key]))
 		child.theme = theme
-		list[name].visible = false
+		list[key].visible = false
 	
-	var child = Button.new()
+	child = Button.new()
 	$Buttons.add_child(child)
 	child.size = Vector2(500,150)
 	child.position = Vector2(0,y)

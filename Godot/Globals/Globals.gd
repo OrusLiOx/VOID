@@ -4,6 +4,7 @@ var dangerColor
 var normalColor
 var player
 var holdProj
+var holdEnemies
 var enemyPause = true
 
 var lives = 1
@@ -41,3 +42,15 @@ func add_colors(c1,c2, weight =.5):
 	color.a = c1.a*weight + c2.a*(1-weight)
 	return color
 	
+func get_upgrade_value(upgrade):
+	if upgrades == null:
+		return 0
+	if has_upgrade(upgrade):
+		return upgrades.get_value(upgrade)
+	else:
+		return 0
+
+func has_upgrade(upgrade):
+	if upgrades == null:
+		return false
+	return upgrades.have.has(upgrade)

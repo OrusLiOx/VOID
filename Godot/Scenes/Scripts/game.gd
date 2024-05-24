@@ -24,6 +24,7 @@ signal gameover()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Globals.holdProj = $holdProjectiles
+	Globals.holdEnemies = $holdEnemies
 	holdEnemies = $holdEnemies
 	waveTimer =$WaveTimer
 	waveTimerBar = $Hud/Wave/TimeBar/Bar
@@ -90,10 +91,10 @@ func start():
 	for child in holdEnemies.get_children():
 		child.queue_free()
 	wave = 0
-	waveLength = 10
-	waveWait = 5
+	waveLength = 1
+	waveWait = 1
 	waveWeight = 14
-	enemyTypes = 3
+	enemyTypes = 1
 	start_wave()
 
 func stop():
@@ -135,7 +136,7 @@ func generate_health_bar():
 	var fill = load("res://Sprites/Player/PlayerFill.png")
 	var healthBase = $Hud/Health
 	for c in 2:
-		for r in 5:
+		for r in 4:
 			var child = Sprite2D.new()
 			child.texture = border
 			var fillChild = Sprite2D.new()
@@ -159,7 +160,7 @@ func _on_player_update_health(cur, maxhp):
 	
 	for i in maxhp:
 		healthSprites[i].visible = true
-	for i in range(maxhp, 10):
+	for i in range(maxhp, 8):
 		healthSprites[i].visible = false
 	
 	if cur == 0:
@@ -193,7 +194,7 @@ func start_wave():
 	Globals.player.continue_cooldowns()
 	gameState = "start wave"
 	wave += 1
-	$Hud/Wave/Label.text = "Wave\n"+str(wave)
+	$Hud/Wave/Label.text = str(wave)
 	reset_spawns()
 	spawn_wave()
 	waveTimer.start(waveWait)

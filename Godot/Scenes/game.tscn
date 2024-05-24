@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://cglbpyq6fsq81"]
+[gd_scene load_steps=10 format=3 uid="uid://cglbpyq6fsq81"]
 
 [ext_resource type="PackedScene" uid="uid://dnaqej8yhbeu8" path="res://Scenes/Player/player.tscn" id="1_cp43h"]
 [ext_resource type="Script" path="res://Scenes/Scripts/game.gd" id="1_dbkqe"]
 [ext_resource type="PackedScene" uid="uid://c7umn3wpd4dbn" path="res://Scenes/Player/ability_visual.tscn" id="2_y0ouu"]
 [ext_resource type="PackedScene" uid="uid://brxi1n0ij6ls2" path="res://Scenes/upgrades.tscn" id="4_icubv"]
+[ext_resource type="Texture2D" uid="uid://tkniconet2pk" path="res://Sprites/Player/abilityBase.png" id="4_v24ak"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npagf"]
 size = Vector2(2997, 1909)
@@ -77,7 +78,7 @@ offset_bottom = 1080.0
 color = Color(0, 0, 0, 1)
 
 [node name="Abilities" type="Node2D" parent="Hud"]
-position = Vector2(60, 425)
+position = Vector2(60, 375)
 
 [node name="AbilityVisual" parent="Hud/Abilities" instance=ExtResource("2_y0ouu")]
 
@@ -93,18 +94,33 @@ ability = 2
 position = Vector2(0, 330)
 ability = 3
 
+[node name="Item" type="Sprite2D" parent="Hud/Abilities"]
+modulate = Color(1, 1, 1, 0.501961)
+position = Vector2(0, 440)
+texture = ExtResource("4_v24ak")
+
+[node name="Item" type="Sprite2D" parent="Hud/Abilities/Item"]
+
+[node name="Label" type="Label" parent="Hud/Abilities/Item"]
+offset_left = -46.0
+offset_top = -4.0
+offset_right = 46.0
+offset_bottom = 46.0
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 2
+vertical_alignment = 2
+
 [node name="Wave" type="Node2D" parent="Hud"]
 
 [node name="Label" type="Label" parent="Hud/Wave"]
 offset_right = 120.0
 offset_bottom = 75.0
 theme_override_font_sizes/font_size = 30
-text = "Wave
-0"
+text = "0"
 horizontal_alignment = 1
 
 [node name="TimeBar" type="Node2D" parent="Hud/Wave"]
-position = Vector2(22.5, 93)
+position = Vector2(22.5, 45)
 
 [node name="Top" type="ColorRect" parent="Hud/Wave/TimeBar"]
 offset_right = 75.0
@@ -134,7 +150,7 @@ offset_bottom = 436.0
 rotation = 3.14159
 
 [node name="Health" type="Node2D" parent="Hud"]
-position = Vector2(60, 1045)
+position = Vector2(35, 1047)
 
 [node name="ColorRect" type="ColorRect" parent="Hud"]
 offset_left = 120.0
@@ -164,9 +180,11 @@ text = "Wave Complete"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Upgrades" parent="." instance=ExtResource("4_icubv")]
+[node name="Upgrades" parent="." node_paths=PackedStringArray("itemDisplay") instance=ExtResource("4_icubv")]
+visible = false
 z_index = 10
 position = Vector2(71, 9)
+itemDisplay = NodePath("../Hud/Abilities/Item")
 
 [connection signal="area_exited" from="validZone" to="." method="_on_valid_zone_area_exited"]
 [connection signal="update_health" from="Player" to="." method="_on_player_update_health"]

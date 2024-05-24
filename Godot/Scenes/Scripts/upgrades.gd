@@ -1,4 +1,5 @@
 extends Node2D
+@export var itemDisplay:Node2D
 
 var available: Array
 var have : Dictionary
@@ -11,8 +12,12 @@ var choiceLabel:Label
 var take
 var scaling : Dictionary
 
+var baseItemUses
+var baseTempDur
+
 signal done()
 
+# SETUP
 func _ready():
 	choicesButtons = $UpgradeChoiceDisplay/Buttons
 	choiceLabel = $UpgradeChoiceDisplay/Label2
@@ -20,7 +25,21 @@ func _ready():
 	for child in choicesButtons.get_children():
 		child.button_down.connect(take_upgrade.bind(i))
 		i+=1
-		
+	
+	baseItemUses = {
+		"heal":1,
+		"jam":3,
+		"proj":3,
+		"cd":3
+	}
+	baseTempDur = {
+		"temp shield": 3,
+		"temp short wave": 3,
+		"temp range": 3,
+		"temp dur": 3,
+		"temp cd": 3
+	}
+	
 	scaling["iframes"] = .25
 	scaling["speed"] = 50
 	scaling["a3 speedup"] = .2
@@ -34,75 +53,98 @@ func _ready():
 	scaling["a2 range"] = 50
 	scaling["a4 range"] = 50
 
-	scaling["a1 cd"] = .5
-	scaling["a2 cd"] = .5
-	scaling["a3 cd"] = .5
-	scaling["a4 cd"] = 5
+	scaling["a1 cd"] = -.5
+	scaling["a2 cd"] = -.5
+	scaling["a3 cd"] = -.5
+	scaling["a4 cd"] = -5
 
 func reset():
+	itemDisplay.modulate = Color(.5,.5,.5)
+	itemDisplay.get_child(0).modulate.a = 0
+	itemDisplay.get_child(1).text = ""
+	item = ""
+	
 	temp.clear()
 	have.clear()
 	available.clear()
 	
-	item = ""
-	itemUses = 0
+	#reset_general()
+	#reset_abilities()
+	#reset_items()
+	reset_temps()
+
+func reset_general():
+	have["health"] = 0
+	have["iframes"] = 0
+	have["speed"] = 0
 	
-	#have["temp dur"] = 1
-	have["item uses"] = 1
+	available.push_back("pick 3")
+	available.push_back("heal")
 	
-	available.push_back("a4 charge")
+	available.push_back("health")
+	
+	available.push_back("speed")
+	available.push_back("iframes")
+
+func reset_abilities():
 	have["a4 charge"] = 1
 	
-	available.push_back("a1 linger")
-	available.push_back("a2 linger")
-
-	available.push_back("a3 proj")
-	available.push_back("a3 jam")
+	have["a1 cd"] = 0
+	have["a2 cd"] = 0
+	have["a3 cd"] = 0
+	have["a4 cd"] = 0
 	
-	for i in 5:
-		available.push_back("a1 cd")
-		available.push_back("a2 cd")
-		available.push_back("a3 cd")
-		available.push_back("a4 cd")
-		have["a1 cd"] = 0
-		have["a2 cd"] = 0
-		have["a3 cd"] = 0
-		have["a4 cd"] = 0
-		
-		available.push_back("a1 range")
-		available.push_back("a2 range")
-		available.push_back("a4 range")
-		have["a1 range"] = 0
-		have["a2 range"] = 0
-		have["a4 range"] = 0
-		
-		available.push_back("a3 dur")
-		have["a3 dur"] = 0
-		available.push_back("a3 speedup")
-		have["a3 speedup"] = 0
-		
-		available.push_back("speed")
-		have["speed"] = 0
-		available.push_back("iframes")
-		have["iframes"] = 0
-		available.push_back("item uses")
-		#available.push_back("temp dur")
-		available.push_back("health")
-		have["health"] = 0
 	
-	available.push_back("heal")
+	have["a1 range"] = 0
+	have["a2 range"] = 0
+	have["a4 range"] = 0
+	
+	have["a3 dur"] = 0
+	have["a3 speedup"] = 0
+	
+	#available.push_back("a4 charge")
+	
+	#available.push_back("a1 linger")
+	#available.push_back("a2 linger")
+#
+	#available.push_back("a3 proj")
+	#available.push_back("a3 jam")
+	
+	available.push_back("a1 cd")
+	available.push_back("a2 cd")
+	available.push_back("a3 cd")
+	available.push_back("a4 cd")
+		
+	available.push_back("a1 range")
+	available.push_back("a2 range")
+	available.push_back("a4 range")
+		
+	available.push_back("a3 dur")
+	available.push_back("a3 speedup")
+	
+func reset_items():
+	item = ""
+	itemUses = 0
+	have["item uses"] = 0
 	available.push_back("item proj")
 	available.push_back("item jam")
 	available.push_back("item cd")
 	available.push_back("item heal")
 	
-	available.push_back("pick 3")
-	#available.push_back("temp shield")
-	#available.push_back("temp short wave")
-	#available.push_back("temp range")
-	#available.push_back("temp dur")
-	#available.push_back("temp cd")
+	available.push_back("item uses")
+
+func reset_temps():
+	have["temp dur"] = 0
+	available.push_back("temp shield")
+	available.push_back("temp short wave")
+	available.push_back("temp range")
+	available.push_back("temp dur")
+	available.push_back("temp cd")
 	
+	available.push_back("temp dur")
+
+# UPGRADE SELECTION
+# call at the end of waves to start upgrade selection
 func start_upgrade_select():
 	visible = true
 	take = 1
@@ -111,7 +153,8 @@ func start_upgrade_select():
 		have.erase("pick 3")
 	
 	upgrade_select()
-	
+
+# creates selection for one round of upgrade choices
 func upgrade_select():
 	if take == 0:
 		visible = false
@@ -127,10 +170,10 @@ func upgrade_select():
 	var children = choicesButtons.get_children()
 	for j in 3:
 		set_upgrade_display(children[j], choices[j])
-		
+
+# returns array of num unique upgrades
 func pick_rand(num = 3):
 	var arr:Array = []
-	
 	while arr.size()<num:
 		var pick = available.pick_random()
 		if arr.find(pick) == -1:
@@ -138,9 +181,10 @@ func pick_rand(num = 3):
 	
 	return arr
 
+# sets given upgrade display to given upgrade info
 func set_upgrade_display(obj, upgrade):
-	var title
-	var desc
+	var title:String
+	var desc:String
 	
 	if upgrade.contains("temp") and upgrade != "temp dur":
 		title = "Temporary:\n"
@@ -157,7 +201,6 @@ func set_upgrade_display(obj, upgrade):
 					title += "Reduce Cooldown +" +str(have[upgrade]+1)
 					desc = get_scaling_upgrade_desc(upgrade, Globals.player.a[i-1]["cooldown"], "Reduce the cooldown of Ability "+str(i)+" by ","s")
 				elif upgrade.contains("range"):
-					var quantity = have[upgrade]
 					title += "Range +" +str(have[upgrade]+1)
 					desc = get_scaling_upgrade_desc(upgrade, Globals.player.a[i-1]["range"], "Increase the range of Ability "+str(i)+" by "," units")
 				elif upgrade.contains("dur"):
@@ -178,7 +221,7 @@ func set_upgrade_display(obj, upgrade):
 			desc = "When the effect of Ability 3 ends, enemies within 300 units of you will be jammed for 3 seconds"
 
 		"a3 speedup":
-			title = "Speed Boost +" + str(have["speed"]+1)
+			title += "Speed Boost +" + str(have["speed"]+1)
 			desc = get_scaling_upgrade_desc(upgrade, Globals.player.a[2]["speedup"], "Increase speed boost gained from Ability 3 by ","")
 		
 		"speed":
@@ -188,13 +231,13 @@ func set_upgrade_display(obj, upgrade):
 			title = "Invincibility Frames +" + str(have["iframes"]+1)
 			desc = get_scaling_upgrade_desc(upgrade, .5, "Increases how long you are invincible after getting hit by ","s")
 		"item uses":
-			title = "Item Uses  +" + str(itemUses)
-			desc = get_scaling_upgrade_desc(upgrade, 1, "Increase how mnay times you can use items by ","")
+			title = "Item Uses +" + str(have["item uses"]+1)
+			desc = get_scaling_upgrade_desc(upgrade, 0, "Increase how many times you can use items by ","")
 		"temp dur":
 			title = "Temporary Effect Duration  +" + str(have["temp dur"]+1)
-			desc = get_scaling_upgrade_desc(upgrade, 1, "Increases how many waves temporary effects last for by "," waves")
+			desc = get_scaling_upgrade_desc(upgrade, 0, "Increases the duration of temporary effects by "," wave")
 		"health":
-			title = "Health  +" + str(have["health"]+1)
+			title = "Health +" + str(have["health"]+1)
 			desc = get_scaling_upgrade_desc(upgrade, 5, "Increases maximum health by ","")
 		"heal":
 			title = "Heal"
@@ -210,11 +253,11 @@ func set_upgrade_display(obj, upgrade):
 			title += "Ability Refresh"
 			desc = "Resets cooldown on all abilities upon use\n\n"
 		"item heal":
-			title += "Jam"
+			title += "Heal"
 			desc = "Heals 3 health on use\n\n"
 		
 		"pick 3":
-			title+="Pick 3 Next Wave"
+			title += "Pick 3 Next Wave"
 			desc = "At the end of the next wave, you get 3 perks instead of 1\n\n"
 		"temp shield":
 			title+="Shield"
@@ -230,14 +273,12 @@ func set_upgrade_display(obj, upgrade):
 			desc = "Reduces the cooldown of all abilities by 1s\n\n"
 			
 	if upgrade.contains("temp") and upgrade != "temp dur":
-		desc += "This perk will last for " + str(have["temp dur"]) + " waves\n\n"
+		desc += "This perk will last for " + str(baseTempDur[upgrade] +have["temp dur"]) + " waves\n\n"
 		
 	elif upgrade.contains("item") and upgrade != "item uses":
-		desc += "This item can be used " + str(have["item uses"]) + " times\n\n"
+		desc += "This item can be used " + str(baseItemUses[upgrade.substr(5)]+have["item uses"]) + " times\n\n"
 		if item != "":
 			desc +="This will replace your current item\n"
-			desc+="Current Item: " + item
-			desc+="\nUses Left: " + str(itemUses)
 	
 	for child in obj.get_children():
 		if child.name == "Name":
@@ -245,53 +286,123 @@ func set_upgrade_display(obj, upgrade):
 		elif child.name == "Description":
 			child.text = desc
 
-func get_scaling_upgrade_desc(upgrade, baseValue = 0, startText ="", unit = ""):
+# generates description for upgrades which scale based on how many times it was picked up
+func get_scaling_upgrade_desc(upgrade, baseValue = 0.0, startText ="", unit = ""):
 	var s
-	if !scaling.has(upgrade):
-		s = 1
-	else:
+	if scaling.has(upgrade):
 		s = scaling[upgrade]
+	else:
+		s = 1
 		
 	var desc = ""
 	var quantity = baseValue + s*have[upgrade]
-				
-	desc = startText + str(s) + unit + "\n\n"
+	
+	if startText !="":
+		desc = startText + str(abs(s)) + unit 
+	desc+= "\n\n"
 	
 	if upgrade == "a3 speedup":
 		desc += "Current: x" + str(quantity) + unit+"\n"
 		desc += "New: x" + str(quantity+s) + unit
+	elif upgrade == "item uses" :
+		desc += "Current: +" + str(quantity) + unit+"\n"
+		desc += "New: +" + str(quantity+s) + unit
+	elif upgrade == "temp dur":
+		if quantity == 1:
+			desc += "Current: +" + str(quantity) + unit+"\n"
+		else:
+			desc += "Current: +" + str(quantity) + unit+"s\n"
+		desc += "New: +" + str(quantity+s) + unit+"s"
 	else:
 		desc += "Current: " + str(quantity) + unit+"\n"
 		desc += "New: " + str(quantity+s) + unit
 	
 	return desc
-	pass
 
+# modifies nessecary values upon selecting an upgrade
 func take_upgrade(upgrade):
 	take -=1
 	upgrade = choices[upgrade]
-	if upgrade.find("temp")!=-1 and upgrade != "temp dur":
-		if temp.keys().find(upgrade) != -1:
-			temp[upgrade] += have["temp dur"]
-		else:
-			temp[upgrade] = have["temp dur"]
-	
-	elif upgrade.find("item")!=-1 and upgrade != "item uses":
-		item = upgrade
-		itemUses = have["item uses"]
-	else:
-		if temp.keys().find(upgrade) != -1:
-			have[upgrade] += 1
-		else:
-			have[upgrade] = 1
+	match upgrade:
+		"heal":
+			Globals.player.heal()
+		"health":
+			Globals.player.hpMax +=1
+			Globals.player.heal(1)
+			if Globals.player.hpMax == 8:
+				available.remove_at(available.find(upgrade))
+		_:
+			if upgrade.find("temp")!=-1 and upgrade != "temp dur":
+				temp[upgrade] = baseTempDur[upgrade]+have["temp dur"]
+			elif upgrade.find("item")!=-1 and upgrade != "item uses":
+				item = upgrade.substr(5)
+				itemUses = baseItemUses[item]+ have["item uses"]
+				itemDisplay.modulate = Color.WHITE
+				itemDisplay.get_child(1).text = str(itemUses)
+				itemDisplay.get_child(0).modulate.a =1
+				match item:
+					"heal":
+						itemDisplay.get_child(0).texture = load("res://Sprites/Player/PlayerFill.png")
+					"proj":
+						itemDisplay.get_child(0).texture = load("res://Sprites/Player/ability1.png")
+					"jam":
+						itemDisplay.get_child(0).texture = load("res://Sprites/Player/ability2.png")
+					"cd":
+						itemDisplay.get_child(0).texture = load("res://Sprites/Player/cooldown.png")
+				
+			else:
+				if have.has(upgrade):
+					have[upgrade] += 1
+				else:
+					have[upgrade] = 1
+				if upgrade == "item uses" and item !="":
+					itemUses += 1 
+					itemDisplay.get_child(1).text = str(itemUses)
 	
 	upgrade_select()
 
+# USE ITEM
+func use_item():
+	itemUses -= 1
+	itemDisplay.get_child(1).text = str(itemUses)
+	
+	match item:
+		"heal":
+			Globals.player.heal(3)
+		"proj":
+			for child in Globals.holdProj.get_children():
+				if child.is_in_group("Projectile"):
+					child.queue_free()
+				else:
+					for c in child.get_children():
+						c.queue_free()
+		"jam":
+			for child in Globals.holdEnemies.get_children():
+				for obj in child.get_children():
+					if obj.is_in_group("Jammable"):
+						obj.jam(self, 3)
+		"cd":
+			Globals.player.reset_cooldowns()
+	
+	if itemUses <= 0:
+		itemDisplay.modulate = Color(.5,.5,.5)
+		itemDisplay.get_child(0).modulate.a = 0
+		itemDisplay.get_child(1).text = ""
+		item = ""
+
+# MISC
 func print_upgrades():
 	print("{")
+	print("\titem: " + item)
+	print("\titem uses left: " , itemUses)
 	for key in have.keys():
 		print("\t" + key + ": " + str(have[key]))
 	print()
 	for key in temp.keys():
 		print("\t" + key + ": " + str(temp[key]))
 	print("}")
+
+func get_value(upgrade):
+	if have.has(upgrade):
+		return have[upgrade]*scaling[upgrade]
+	return 0
