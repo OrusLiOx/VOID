@@ -40,23 +40,28 @@ func _ready():
 		"temp cd": 3
 	}
 	
-	scaling["iframes"] = .25
-	scaling["speed"] = 50
-	scaling["a3 speedup"] = .2
-	
-	scaling["a1 dur"] = .5
-	scaling["a2 dur"] = .5
-	scaling["a3 dur"] = .5
-	scaling["a4 dur"] = .5
-	
-	scaling["a1 range"] = 50
-	scaling["a2 range"] = 50
-	scaling["a4 range"] = 50
+	scaling = {
+		"iframes": .25,
+		"speed": 50,
+		"a3 speedup": .2,
+		
+		"a1 dur": .5,
+		"a2 dur": .5,
+		"a3 dur": .5,
+		"a4 dur": .5,
+		
+		"a1 range": 50,
+		"a2 range": 50,
+		"a4 range": 50,
 
-	scaling["a1 cd"] = -.5
-	scaling["a2 cd"] = -.5
-	scaling["a3 cd"] = -.5
-	scaling["a4 cd"] = -5
+		"a1 cd": -.5,
+		"a2 cd": -.5,
+		"a3 cd": -.5,
+		"a4 cd": -5,
+
+		"temp cd": .15
+	}
+	
 
 func reset():
 	itemDisplay.modulate = Color(.5,.5,.5)
@@ -85,6 +90,9 @@ func reset_general():
 	
 	available.push_back("speed")
 	available.push_back("iframes")
+	
+	available.push_back("shield")
+	available.push_back("regen")
 
 func reset_abilities():
 	have["a4 charge"] = 1
@@ -99,14 +107,19 @@ func reset_abilities():
 	have["a2 range"] = 0
 	have["a4 range"] = 0
 	
+	have["a1 linger"] = 0
+	have["a1 linger"] = 0
+	
+	have["a1 dur"] = 0
+	have["a2 dur"] = 0
 	have["a3 dur"] = 0
 	have["a3 speedup"] = 0
 	
 	#available.push_back("a4 charge")
 	
-	#available.push_back("a1 linger")
-	#available.push_back("a2 linger")
-#
+	available.push_back("a1 linger")
+	available.push_back("a2 linger")
+
 	#available.push_back("a3 proj")
 	#available.push_back("a3 jam")
 	
@@ -135,13 +148,10 @@ func reset_items():
 
 func reset_temps():
 	have["temp dur"] = 0
-	available.push_back("temp shield")
 	available.push_back("temp short wave")
 	available.push_back("temp range")
 	available.push_back("temp dur")
 	available.push_back("temp cd")
-	
-	available.push_back("temp dur")
 
 # UPGRADE SELECTION
 # call at the end of waves to start upgrade selection
@@ -151,6 +161,11 @@ func start_upgrade_select():
 	if have.has("pick 3"):
 		take = 3
 		have.erase("pick 3")
+	
+	for key in temp.keys():
+		temp[key]-=1
+		if temp[key]<=0:
+			temp.erase(key)
 	
 	upgrade_select()
 
@@ -205,7 +220,10 @@ func set_upgrade_display(obj, upgrade):
 					desc = get_scaling_upgrade_desc(upgrade, Globals.player.a[i-1]["range"], "Increase the range of Ability "+str(i)+" by "," units")
 				elif upgrade.contains("dur"):
 					title += "Duration +" +str(have[upgrade]+1)
-					desc = get_scaling_upgrade_desc(upgrade, Globals.player.a[i-1]["duration"], "Increase the duration of Ability "+str(i)+" by ","s")
+					desc = get_scaling_upgrade_desc(upgrade, Globals.player.a[i-1]["duration"]+get_value(upgrade), "Increase the duration of Ability "+str(i)+" by ","s")
+				elif upgrade.contains("follow"):
+					title +="Follow"
+					desc = "The zone created by Ability " +str(i) + " will follow you"
 				break
 			
 	match upgrade:
@@ -242,6 +260,12 @@ func set_upgrade_display(obj, upgrade):
 		"heal":
 			title = "Heal"
 			desc = "Heal to full health"
+		"shield":
+			title = "Shield"
+			desc = "Gain a shield that blocks 1 hit at the start of each wave"
+		"regen":
+			title = "Regeneration"
+			desc = "Heal 1 health at the start of each wave"
 			
 		"item proj":
 			title += "Anti-Projectile"
@@ -258,7 +282,7 @@ func set_upgrade_display(obj, upgrade):
 		
 		"pick 3":
 			title += "Pick 3 Next Wave"
-			desc = "At the end of the next wave, you get 3 perks instead of 1\n\n"
+			desc = "Take 3 upgrades at the end of the next wave\n\n"
 		"temp shield":
 			title+="Shield"
 			desc = "At the start of the wave, you gain a shield that will block 1 hit\n\n"
@@ -270,7 +294,7 @@ func set_upgrade_display(obj, upgrade):
 			desc = "Range of Abilities 1, 2 and 4 are increased by 100 units\n\n"
 		"temp cd":
 			title+="Ability Range"
-			desc = "Reduces the cooldown of all abilities by 1s\n\n"
+			desc = "Reduces the cooldown of all abilities by " +str(int(scaling["temp cd"]*100))+"%\n\n"
 			
 	if upgrade.contains("temp") and upgrade != "temp dur":
 		desc += "This perk will last for " + str(baseTempDur[upgrade] +have["temp dur"]) + " waves\n\n"
@@ -324,6 +348,22 @@ func take_upgrade(upgrade):
 	take -=1
 	upgrade = choices[upgrade]
 	match upgrade:
+		"a1 linger":
+			have["a1 linger"] = 1
+			available.push_back("a1 dur")
+			available.push_back("a1 follow")
+			available.remove_at(available.find(upgrade))
+		"a2 linger":
+			have["a2 linger"] = 1
+			available.push_back("a2 dur")
+			available.push_back("a2 follow")
+			available.remove_at(available.find(upgrade))
+		"a1 follow":
+			have["a1 follow"] = 1
+			available.remove_at(available.find(upgrade))
+		"a2 follow":
+			have["a2 follow"] = 1
+			available.remove_at(available.find(upgrade))
 		"heal":
 			Globals.player.heal()
 		"health":
@@ -331,6 +371,12 @@ func take_upgrade(upgrade):
 			Globals.player.heal(1)
 			if Globals.player.hpMax == 8:
 				available.remove_at(available.find(upgrade))
+		"regen":
+			have["regen"] = 1
+			available.remove_at(available.find(upgrade))
+		"shield":
+			have["shield"] = 1
+			available.remove_at(available.find(upgrade))
 		_:
 			if upgrade.find("temp")!=-1 and upgrade != "temp dur":
 				temp[upgrade] = baseTempDur[upgrade]+have["temp dur"]
@@ -352,6 +398,9 @@ func take_upgrade(upgrade):
 				
 			else:
 				if have.has(upgrade):
+					if upgrade.contains("cd"):
+						if have[upgrade] >=5:
+							available.remove_at(available.find(upgrade))
 					have[upgrade] += 1
 				else:
 					have[upgrade] = 1
@@ -404,5 +453,8 @@ func print_upgrades():
 
 func get_value(upgrade):
 	if have.has(upgrade):
-		return have[upgrade]*scaling[upgrade]
+		if scaling.has(upgrade):
+			return have[upgrade]*scaling[upgrade]
+		else:
+			return have[upgrade]
 	return 0

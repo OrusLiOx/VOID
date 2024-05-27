@@ -49,7 +49,7 @@ func _ready():
 		{
 			"range": 300,
 			"duration": 0,
-			"cooldown":60,
+			"cooldown":90,
 			"charges":1
 		},
 	}
@@ -87,7 +87,7 @@ func reset_cooldowns():
 
 func heal(amount = hpMax):
 	hp = min(hpMax, hp+amount)
-	emit_signal("update_health", hp, hpMax)
+	emit_signal("update_health", hp, hpMax, shield)
 	healthBar.size.y = 42*hp/hpMax
 	
 func _process(delta):
@@ -120,7 +120,8 @@ func hit(damage):
 		return
 	if shield:
 		shield = false
-		emit_signal("update_health", hp, hpMax, false)
+		emit_signal("update_health", hp, hpMax, false)	
+		iframes = .5 + Globals.get_upgrade_value("iframes")
 		return
 	hp = max(0, hp-damage)
 	healthBar.size.y = 42*hp/hpMax
@@ -181,16 +182,26 @@ func cd_timeout(ability):
 
 func cast0():
 	var cast = zone.instantiate()
-	holdAbilities.add_child(cast)
+	if Globals.has_upgrade("a1 follow"):
+		add_child(cast)
+	else:
+		holdAbilities.add_child(cast)
 	cast.global_position = global_position
-	cast.set_stuff(a[0]["range"]+Globals.get_upgrade_value("a1 range"), a[0]["duration"]+Globals.get_upgrade_value("a1 dur"), "antiproj")
+	cast.set_stuff(a[0]["range"]+Globals.get_upgrade_value("a1 range"),\
+		a[0]["duration"]+Globals.get_upgrade_value("a1 linger")+ Globals.get_upgrade_value("a1 dur"),\
+		"antiproj")
 	pass
 	
 func cast1():
 	var cast = zone.instantiate()
-	holdAbilities.add_child(cast)
+	if Globals.has_upgrade("a2 follow"):
+		add_child(cast)
+	else:
+		holdAbilities.add_child(cast)
 	cast.global_position = global_position
-	cast.set_stuff(a[1]["range"]+Globals.get_upgrade_value("a2 range"), a[1]["duration"]+Globals.get_upgrade_value("a2 dur"), "jam", a[1]["effectDuration"])
+	cast.set_stuff(a[1]["range"]+Globals.get_upgrade_value("a2 range"),\
+		a[1]["duration"]+Globals.get_upgrade_value("a2 linger")+Globals.get_upgrade_value("a2 dur"),\
+		"jam", a[1]["effectDuration"])
 	pass
 	
 func cast2():

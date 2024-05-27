@@ -11,7 +11,7 @@ func spawn():
 	timer = $Timer
 	base = $EnemyBase
 	$Sprite2D.modulate = Globals.normalColor
-	waitTime = randf_range(.5,1.5)
+	waitTime = randf_range(1,2)
 	pick_dest()
 	pass # Replace with function body.
 

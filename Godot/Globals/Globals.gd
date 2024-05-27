@@ -9,7 +9,6 @@ var enemyPause = true
 
 var lives = 1
 var infiniteLives
-var healEachWave = 0
 
 var upgrades
 
@@ -54,4 +53,4 @@ func get_upgrade_value(upgrade):
 func has_upgrade(upgrade):
 	if upgrades == null:
 		return false
-	return upgrades.have.has(upgrade)
+	return upgrades.have.has(upgrade) 

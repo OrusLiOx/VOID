@@ -36,21 +36,21 @@ func _ready():
 		"gattler":
 		{
 			"scene": load("res://Scenes/Enemies/Hazard/gattling_gunner.tscn"),
-			"group size" : 1,
-			"max":4,
+			"group size" : 2,
+			"max":2,
 			"corner": true
 		},
 		"spike bomb":
 		{
 			"scene":load("res://Scenes/Enemies/Hazard/spike_bomb.tscn"),
 			"group size" : 3,
-			"max":100,
+			"max":6,
 			"corner": false
 		},
 		"spinning laser":
 		{
 			"scene":load("res://Scenes/Enemies/Hazard/spinning_laser.tscn"),
-			"group size" : 1,
+			"group size" : .5,
 			"max":3,
 			"corner": false
 		},
@@ -58,7 +58,7 @@ func _ready():
 		{
 			"scene":load("res://Scenes/Enemies/Hazard/wave_bomb.tscn"),
 			"group size" : 3,
-			"max":100,
+			"max":6,
 			"corner": false
 		}
 	}
@@ -67,7 +67,7 @@ func _ready():
 		"gunner":
 		{
 			"scene": load("res://Scenes/Enemies/Mobile/gunner.tscn"),
-			"group size" : 3
+			"group size" : 1
 		
 		},
 		"dasher":
@@ -97,7 +97,7 @@ func start():
 	for child in holdEnemies.get_children():
 		child.queue_free()
 	wave = 0
-	waveLength = 1
+	waveLength = 5
 	waveWait = 1
 	numOfHazards = 0
 	numOfPacks = 1
@@ -196,16 +196,22 @@ func _on_player_update_health(cur, maxhp, shield = false):
 
 # wave stuff
 func start_wave():
-	print("start")
 	$Update.visible = false
 	Globals.player.canAbility = false
 	Globals.player.inv = true
 	Globals.player.continue_cooldowns()
 	gameState = "start wave"
 	wave += 1
+		
 	$Hud/Wave/Label.text = str(wave)
 	reset_spawns()
 	spawn_wave()
+	
+	if Globals.has_upgrade("regen"):
+		Globals.player.heal(1)
+	if Globals.has_upgrade("shield"):
+		Globals.player.gain_shield()
+		
 	waveTimer.start(waveWait)
 
 func wave_end():
@@ -214,19 +220,19 @@ func wave_end():
 	Globals.player.canAbility = false
 	Globals.player.inv = true
 	Globals.player.pause_cooldowns()
-	Globals.player.heal(Globals.healEachWave)
 	
 	for child in $holdProjectiles.get_children():
 		child.queue_free()
 	for child in holdEnemies.get_children():
 		child.queue_free()
 	
-	numOfPacks+=1
-	if numOfPacks >= int(numOfHazards/2)+4:
-		numOfPacks = 1
-		numOfHazards += 1
+	if wave%(numOfHazards+3) == 0:
+		numOfPacks+=1
+		if numOfPacks >= int(numOfHazards/2)+4:
+			numOfPacks -= 2
+			numOfHazards = min(20, numOfHazards+1)
 	
-	waveTimer.start(3)
+	waveTimer.start(2)
 
 func wave_go():
 	gameState = "active wave"
@@ -254,14 +260,13 @@ func _on_wave_timer_timeout():
 
 func spawn_wave():
 	holdEnemies.modulate.a = .6
-	var possibleEnemies = enemyData.keys()
 	var hazards:Array = Array()
 	
 	var i = 0
 	
 	while i < numOfHazards:
 		var haz = hazardData.keys().pick_random()
-		while hazards.find(haz) == -1:
+		while hazards.find(haz) != -1:
 			haz = hazardData.keys().pick_random()
 		hazards.push_back(haz)
 		haz = hazardData[haz]
@@ -269,17 +274,24 @@ func spawn_wave():
 		var spawned = 0
 		
 		while i < numOfHazards and spawned < haz["max"]:
+			if i+ 1/haz["group size"] >numOfHazards:
+				break
+				
 			spawn_hazard(haz)
-			i += 1
+			
+			if haz["group size"] < 1:
+				i+= 1/haz["group size"]
+			else:
+				i += 1
+				
 			spawned += 1
 	
 	for j in numOfPacks:
 		spawn_pack(enemyData[enemyData.keys().pick_random()])
 
-	pass
-
 func spawn_hazard(hazard):
-	for i in hazard["group size"]:
+	var spawned = 0
+	for i in ceil(hazard["group size"]):
 		var child
 		var pos
 		
@@ -301,8 +313,9 @@ func spawn_hazard(hazard):
 		child = hazard["scene"].instantiate()
 		holdEnemies.add_child(child)
 		child.position = pos
-		
-	pass
+		spawned += 1
+	
+	return spawned
 	
 func spawn_pack(enemy):
 	for i in enemy["group size"]:
@@ -319,7 +332,7 @@ func reset_spawns():
 	hazardSpawns.clear()
 	for x in 5:
 		for y in 4:
-			hazardSpawns.push_back(Vector2(1796.0/5.5*(x+1)+124, 1080.0/4.5*(y+1)))
+			hazardSpawns.push_back(Vector2(1796.0/5*(x+.5)+124, 1080.0/4*(y+.5)))
 	
 	cornerSpawns = [
 		Vector2(174,50),
@@ -329,7 +342,5 @@ func reset_spawns():
 	]
 
 func _on_upgrades_done():
-	print("\nwave " + str(wave))
-	$Upgrades.print_upgrades()
 	start_wave()
 	pass # Replace with function body.

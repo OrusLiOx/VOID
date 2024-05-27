@@ -6,7 +6,7 @@ var targetOffset
 func spawn():
 	hit = $Hurt
 	modulate = Globals.dangerColor
-	speed = randf_range(50,150)
+	speed = randf_range(10,150)
 	targetOffset = Vector2(randf_range(-50,50),randf_range(-50,50))
 	pass # Replace with function body.
 

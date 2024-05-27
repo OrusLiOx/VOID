@@ -23,7 +23,7 @@ func _process(delta):
 func spawn_wave():
 	var parent = Node2D.new()
 	waves.push_back(parent)
-	if waves.size() >= 5:
+	if waves.size() >= 4:
 		waves.front().queue_free()
 		waves.remove_at(0)
 	Globals.holdProj.add_child(parent)

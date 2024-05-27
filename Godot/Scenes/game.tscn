@@ -154,6 +154,7 @@ rotation = 3.14159
 position = Vector2(35, 1047)
 
 [node name="Shield" type="Sprite2D" parent="Hud/Health"]
+z_index = 1
 position = Vector2(26, -77)
 texture = ExtResource("5_147tf")
 
