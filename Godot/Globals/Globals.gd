@@ -9,6 +9,7 @@ var enemyPause = true
 
 var lives = 1
 var infiniteLives
+var healEachWave = 0
 
 var upgrades
 

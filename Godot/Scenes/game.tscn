@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://cglbpyq6fsq81"]
+[gd_scene load_steps=11 format=3 uid="uid://cglbpyq6fsq81"]
 
 [ext_resource type="PackedScene" uid="uid://dnaqej8yhbeu8" path="res://Scenes/Player/player.tscn" id="1_cp43h"]
 [ext_resource type="Script" path="res://Scenes/Scripts/game.gd" id="1_dbkqe"]
 [ext_resource type="PackedScene" uid="uid://c7umn3wpd4dbn" path="res://Scenes/Player/ability_visual.tscn" id="2_y0ouu"]
 [ext_resource type="PackedScene" uid="uid://brxi1n0ij6ls2" path="res://Scenes/upgrades.tscn" id="4_icubv"]
 [ext_resource type="Texture2D" uid="uid://tkniconet2pk" path="res://Sprites/Player/abilityBase.png" id="4_v24ak"]
+[ext_resource type="Texture2D" uid="uid://b3qc1uq2rgaji" path="res://Sprites/Player/shield.png" id="5_147tf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npagf"]
 size = Vector2(2997, 1909)
@@ -151,6 +152,10 @@ rotation = 3.14159
 
 [node name="Health" type="Node2D" parent="Hud"]
 position = Vector2(35, 1047)
+
+[node name="Shield" type="Sprite2D" parent="Hud/Health"]
+position = Vector2(26, -77)
+texture = ExtResource("5_147tf")
 
 [node name="ColorRect" type="ColorRect" parent="Hud"]
 offset_left = 120.0

@@ -8,7 +8,8 @@ var waveTimer
 var waveTimerBar
 var waveTimerCount
 var waveLength
-var waveWeight
+var numOfHazards
+var numOfPacks
 var enemyTypes
 
 var enemyData:Dictionary
@@ -31,48 +32,53 @@ func _ready():
 	waveTimerCount = $Hud/Wave/TimeBar/Bot/Label
 	gameState = "inactive"
 	
-	enemyData = {
+	hazardData = {
 		"gattler":
 		{
 			"scene": load("res://Scenes/Enemies/Hazard/gattling_gunner.tscn"),
-			"weight":5,
-			"tags": ["corner"]
+			"group size" : 1,
+			"max":4,
+			"corner": true
 		},
 		"spike bomb":
 		{
 			"scene":load("res://Scenes/Enemies/Hazard/spike_bomb.tscn"),
-			"weight":2,
-			"tags": ["hazard"]
+			"group size" : 3,
+			"max":100,
+			"corner": false
 		},
 		"spinning laser":
 		{
 			"scene":load("res://Scenes/Enemies/Hazard/spinning_laser.tscn"),
-			"weight":5,
-			"tags": ["hazard"]
+			"group size" : 1,
+			"max":3,
+			"corner": false
 		},
 		"wave bomb":
 		{
 			"scene":load("res://Scenes/Enemies/Hazard/wave_bomb.tscn"),
-			"weight":2,
-			"tags": ["hazard"]
-		},
+			"group size" : 3,
+			"max":100,
+			"corner": false
+		}
+	}
+	
+	enemyData = {
 		"gunner":
 		{
 			"scene": load("res://Scenes/Enemies/Mobile/gunner.tscn"),
-			"weight":2,
-			"tags": []
+			"group size" : 3
+		
 		},
 		"dasher":
 		{
 			"scene": load("res://Scenes/Enemies/Mobile/dasher.tscn"),
-			"weight":2,
-			"tags": []
+			"group size" : 3
 		},
 		"spike ball":
 		{
 			"scene": load("res://Scenes/Enemies/Mobile/spike_ball.tscn"),
-			"weight":1,
-			"tags": []
+			"group size" : 7
 		}
 	}
 	
@@ -93,7 +99,8 @@ func start():
 	wave = 0
 	waveLength = 1
 	waveWait = 1
-	waveWeight = 14
+	numOfHazards = 0
+	numOfPacks = 1
 	enemyTypes = 1
 	start_wave()
 
@@ -151,7 +158,8 @@ func generate_health_bar():
 			child.position = Vector2(c*50,r*-50)
 			pass
 
-func _on_player_update_health(cur, maxhp):
+func _on_player_update_health(cur, maxhp, shield = false):
+	$Hud/Health/Shield.visible = shield
 	cur = max(0,cur)
 	for i in cur:
 		healthSprites[i].get_child(0).visible = true
@@ -188,6 +196,7 @@ func _on_player_update_health(cur, maxhp):
 
 # wave stuff
 func start_wave():
+	print("start")
 	$Update.visible = false
 	Globals.player.canAbility = false
 	Globals.player.inv = true
@@ -205,11 +214,18 @@ func wave_end():
 	Globals.player.canAbility = false
 	Globals.player.inv = true
 	Globals.player.pause_cooldowns()
-	Globals.player.heal(1)
+	Globals.player.heal(Globals.healEachWave)
+	
 	for child in $holdProjectiles.get_children():
 		child.queue_free()
 	for child in holdEnemies.get_children():
 		child.queue_free()
+	
+	numOfPacks+=1
+	if numOfPacks >= int(numOfHazards/2)+4:
+		numOfPacks = 1
+		numOfHazards += 1
+	
 	waveTimer.start(3)
 
 func wave_go():
@@ -238,37 +254,36 @@ func _on_wave_timer_timeout():
 
 func spawn_wave():
 	holdEnemies.modulate.a = .6
-	var w = waveWeight
 	var possibleEnemies = enemyData.keys()
-	var enemies:Array = Array()
+	var hazards:Array = Array()
 	
-	for i in enemyTypes+int(wave/10):
-		var rand = randi_range(0,possibleEnemies.size()-1)
-		var enemy = enemyData[possibleEnemies[rand]]
-		enemies.push_back(enemy)	
-
-	for enemy in enemies:
-		w-=spawn_pack(enemy)
+	var i = 0
+	
+	while i < numOfHazards:
+		var haz = hazardData.keys().pick_random()
+		while hazards.find(haz) == -1:
+			haz = hazardData.keys().pick_random()
+		hazards.push_back(haz)
+		haz = hazardData[haz]
 		
-	while w > 0:
-		w-=spawn_pack(enemies.pick_random())
+		var spawned = 0
+		
+		while i < numOfHazards and spawned < haz["max"]:
+			spawn_hazard(haz)
+			i += 1
+			spawned += 1
+	
+	for j in numOfPacks:
+		spawn_pack(enemyData[enemyData.keys().pick_random()])
+
 	pass
 
-func spawn_pack(enemy):
-	var weight = 0
-	var amount = max(1, (waveWeight+wave)/(enemyTypes+int(wave/10))/enemy["weight"])
-	for i in amount:
+func spawn_hazard(hazard):
+	for i in hazard["group size"]:
 		var child
 		var pos
-			
-		if enemy["tags"].find("hazard") != -1:
-			if hazardSpawns.size() <=0:
-				continue
-			else:
-				var rand = randi_range(0, hazardSpawns.size()-1)
-				pos = hazardSpawns[rand]
-				hazardSpawns.remove_at(rand)
-		elif enemy["tags"].find("corner") != -1:
+		
+		if hazard["corner"]:
 			if cornerSpawns.size()<=0:
 				continue
 			else:
@@ -276,21 +291,35 @@ func spawn_pack(enemy):
 				pos = cornerSpawns[rand]
 				cornerSpawns.remove_at(rand)
 		else:
-			pos = Vector2(randf_range(124,1920),randf_range(0,1080))
+			if hazardSpawns.size() <=0:
+				continue
+			else:
+				var rand = randi_range(0, hazardSpawns.size()-1)
+				pos = hazardSpawns[rand]
+				hazardSpawns.remove_at(rand)
+			
+		child = hazard["scene"].instantiate()
+		holdEnemies.add_child(child)
+		child.position = pos
+		
+	pass
+	
+func spawn_pack(enemy):
+	for i in enemy["group size"]:
+		var child
+		var pos
+			
+		pos = Vector2(randf_range(124,1920),randf_range(0,1080))
 			
 		child = enemy["scene"].instantiate()
 		holdEnemies.add_child(child)
 		child.position = pos
-		
-		weight += enemy["weight"]
-
-	return weight
 
 func reset_spawns():
 	hazardSpawns.clear()
 	for x in 5:
 		for y in 4:
-			hazardSpawns.push_back(Vector2(1796.0/6*(x+1)+124, 1080.0/5*(y+1)))
+			hazardSpawns.push_back(Vector2(1796.0/5.5*(x+1)+124, 1080.0/4.5*(y+1)))
 	
 	cornerSpawns = [
 		Vector2(174,50),

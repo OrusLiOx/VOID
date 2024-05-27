@@ -9,6 +9,7 @@ var hp = 5
 var hpMax = 5
 var healthBar
 var canAbility
+var shield
 
 var a:Dictionary
 var charges:Array
@@ -73,6 +74,7 @@ func reset():
 	iframes = 0
 	inv = false
 	hpMax = 4
+	shield = false
 	heal()
 	healthBar.size.y = 42.0*hp/hpMax
 	visible = true
@@ -116,12 +118,20 @@ func die():
 func hit(damage):
 	if iframes >0:
 		return
+	if shield:
+		shield = false
+		emit_signal("update_health", hp, hpMax, false)
+		return
 	hp = max(0, hp-damage)
 	healthBar.size.y = 42*hp/hpMax
 	iframes = .5 + Globals.get_upgrade_value("iframes")
 	if hp <=0:
 		die()
 	emit_signal("update_health", hp, hpMax)
+
+func gain_shield():
+	shield = true
+	emit_signal("update_health", hp, hpMax, true)
 
 func _on_area_2d_area_entered(area):
 	if area.is_in_group("Projectile"):

@@ -68,10 +68,10 @@ func reset():
 	have.clear()
 	available.clear()
 	
-	#reset_general()
-	#reset_abilities()
-	#reset_items()
-	reset_temps()
+	reset_general()
+	reset_abilities()
+	reset_items()
+	#reset_temps()
 
 func reset_general():
 	have["health"] = 0
