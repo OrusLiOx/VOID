@@ -19,8 +19,9 @@ func spawn_lasers():
 		var child = laserScene.instantiate()
 		$Lasers.add_child(child)
 		child.position = Vector2.ZERO
-		child.rotation = rotation+i*PI/2
+		child.rotation = i*PI/2	
 		child.go(5,5,true)
+		$Timer.start(5)
 
 
 func _on_enemy_base_jammed():
@@ -31,4 +32,9 @@ func _on_enemy_base_jammed():
 
 func _on_enemy_base_unjammed():
 	spawn_lasers()
+	pass # Replace with function body.
+
+
+func _on_timer_timeout():
+	$Timer.stop()
 	pass # Replace with function body.

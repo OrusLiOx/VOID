@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://chwd1xmuhww2r"]
+[gd_scene load_steps=6 format=3 uid="uid://chwd1xmuhww2r"]
 
 [ext_resource type="Script" path="res://Scenes/Enemies/Mobile/Scripts/Gunner.gd" id="1_v7je5"]
 [ext_resource type="PackedScene" uid="uid://c2h47aefbvi62" path="res://Scenes/Enemies/_Generic/enemy_base.tscn" id="2_hpmji"]
 [ext_resource type="Texture2D" uid="uid://mhiumy8dsr0v" path="res://Sprites/Enemies/gunner.png" id="3_ywv28"]
+[ext_resource type="AudioStream" uid="uid://cdtx0qmixkjgf" path="res://Sounds/shoot/laserShoot1.wav" id="4_e5hrn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8p0bk"]
 radius = 21.0238
@@ -20,5 +21,9 @@ shape = SubResource("CircleShape2D_8p0bk")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(17, -1)
 texture = ExtResource("3_ywv28")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_e5hrn")
+bus = &"SFX"
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

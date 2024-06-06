@@ -16,7 +16,6 @@ func _ready():
 	to_title()
 	pass # Replace with function body.
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if queueUnpause == 0:
@@ -51,12 +50,13 @@ func end_game():
 	unpause()
 	gameActive = false
 	gameScene.visible = false
-	gameScene.stop()
+	gameScene.end_game()
 	Globals.player.position.y = 2000
-	Globals.player.canAbility=false
+	Globals.player.canAbility = false
 
 func to_title():
 	end_game()
+	Globals.player.canAbility = false
 	pauseScene.visible = false
 	gameoverScene.visible = false
 	$Title.visible = true
@@ -66,7 +66,6 @@ func to_title():
 func restart_game():
 	end_game()
 	start_game()
-	unpause()
 
 func pause():
 	if gameoverScene.visible:
@@ -79,13 +78,10 @@ func pause():
 func unpause():
 	$Settings.visible = false
 	$Help.visible = false
-	if queueUnpause == -1:
-		queueUnpause = 0
-	elif queueUnpause == 1:
-		queueUnpause = -1
-		Engine.time_scale = 1
-		Globals.player.canAbility = true
-		pauseScene.visible = false
+	queueUnpause = -1
+	Engine.time_scale = 1
+	Globals.player.canAbility = true
+	pauseScene.visible = false
 
 func open_settings():
 	$Settings.visible = true
@@ -111,9 +107,9 @@ func button_down(type):
 		"continue":
 			unpause()
 
-
 func _on_game_gameover():
 	gameoverScene.visible = true
+	Globals.player.canAbility = false
 	var waves = gameScene.wave-1
 	if waves != 1:
 		waves = str(waves) + " waves"

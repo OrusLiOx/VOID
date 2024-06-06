@@ -6,6 +6,7 @@ var proj:PackedScene
 var timer
 var sprite
 var canFire
+var sound : AudioStreamPlayer
 
 func spawn():
 	startRot = randf_range(0,PI/spikes)
@@ -15,6 +16,7 @@ func spawn():
 	
 	sprite = $Sprite2D
 	timer = $Timer
+	sound = $AudioStreamPlayer
 	timer.start(.8/spikes)
 	pass # Replace with function body.
 
@@ -36,6 +38,8 @@ func _process(delta):
 func launch_wave():
 	if $EnemyBase.is_jammed:
 		return
+	
+	sound.play()
 	for i in spikes:
 		var child = proj.instantiate()
 		Globals.holdProj.add_child(child)

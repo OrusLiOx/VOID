@@ -2,6 +2,10 @@ extends Node2D
 var proj
 var rotDest:Array
 var dest
+var sound
+
+func _ready():
+	sound = $AudioStreamPlayer
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -35,6 +39,7 @@ func spawn():
 func _on_timer_timeout():
 	if $EnemyBase.is_jammed or Globals.enemyPause:
 		return
+	sound.play()
 	var shot = proj.instantiate()
 	Globals.holdProj.add_child(shot)
 	shot.position = position

@@ -5,9 +5,11 @@ var timer
 var go = false
 var base
 var waitTime
+var sound
 
 # Called when the node enters the scene tree for the first time.
 func spawn():
+	sound = $AudioStreamPlayer
 	timer = $Timer
 	base = $EnemyBase
 	$Sprite2D.modulate = Globals.normalColor
@@ -56,4 +58,5 @@ func pick_dest():
 func _on_timer_timeout():
 	timer.stop()
 	go = true
+	sound.play()
 	pass # Replace with function body.

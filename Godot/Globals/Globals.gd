@@ -13,6 +13,7 @@ var infiniteLives
 var upgrades
 
 func _ready():
+	randomize()
 	set_color_type("color")
 
 func set_color_type(type):

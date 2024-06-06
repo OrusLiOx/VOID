@@ -97,7 +97,7 @@ func start():
 	for child in holdEnemies.get_children():
 		child.queue_free()
 	wave = 0
-	waveLength = 5
+	waveLength = 30
 	waveWait = 1
 	numOfHazards = 0
 	numOfPacks = 1
@@ -109,6 +109,13 @@ func stop():
 	gameState = "inactive"
 	Globals.enemyPause = true
 	Globals.player.canAbility = false
+
+func end_game():
+	stop()
+	for child in holdEnemies.get_children():
+		child.queue_free()
+	for child in $holdProjectiles.get_children():
+		child.queue_free()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):	
@@ -226,11 +233,12 @@ func wave_end():
 	for child in holdEnemies.get_children():
 		child.queue_free()
 	
-	if wave%(numOfHazards+3) == 0:
-		numOfPacks+=1
-		if numOfPacks >= int(numOfHazards/2)+4:
-			numOfPacks -= 2
-			numOfHazards = min(20, numOfHazards+1)
+	if !(numOfHazards >= 20 and numOfPacks >= int(numOfHazards/2)+4):
+		if wave%(numOfHazards+3) == 0:
+			numOfPacks+=1
+			if numOfPacks >= int(numOfHazards/2)+4:
+				numOfPacks -= 2
+				numOfHazards = min(20, numOfHazards+1)
 	
 	waveTimer.start(2)
 

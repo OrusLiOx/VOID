@@ -8,6 +8,8 @@ var fireTime
 var channelTime
 var loop
 
+var sound
+
 var minChannel = 1.5
 
 func _ready():
@@ -18,6 +20,8 @@ func _ready():
 	state = "inactive"
 	sprite.modulate.a = 0
 	timer = $Timer
+	
+	sound = $AudioStreamPlayer
 
 func go(cTime=minChannel, fTime=.5, l = true):
 	timer.stop()
@@ -47,6 +51,7 @@ func disable():
 
 func fire():
 	state = "fire"
+	sound.play()
 	col.disabled = false
 	sprite.modulate = Globals.dangerColor
 	sprite.size.y = 30

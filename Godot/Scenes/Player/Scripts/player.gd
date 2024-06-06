@@ -17,9 +17,16 @@ var zone
 var cd:Array
 @export var holdAbilities:Node
 
+var sound:Dictionary
+
 signal update_health(cur, max)
 
 func _ready():
+	sound["Hit"] = $HitSound
+	sound["Explosion"] = $Explosion
+	sound["Big Explosion"] = $BigExplosion
+	sound["Jam"] = $Jam
+	sound["Hide"] = $Hide
 	invTimer = $Invincibility
 	zone = load("res://Scenes/Player/zone.tscn")
 	a = {
@@ -61,7 +68,6 @@ func _ready():
 		charges.push_back(a[i]["charges"])
 	Globals.player = self
 	healthBar = $Health
-	canAbility = false
 
 func reset():
 	position.x = (124+1920)/2.0
@@ -126,6 +132,8 @@ func hit(damage):
 	hp = max(0, hp-damage)
 	healthBar.size.y = 42*hp/hpMax
 	iframes = .5 + Globals.get_upgrade_value("iframes")
+	
+	sound["Hit"].play()
 	if hp <=0:
 		die()
 	emit_signal("update_health", hp, hpMax)
@@ -182,6 +190,8 @@ func cd_timeout(ability):
 
 func cast0():
 	var cast = zone.instantiate()
+	
+	sound["Explosion"].play()
 	if Globals.has_upgrade("a1 follow"):
 		add_child(cast)
 	else:
@@ -194,6 +204,7 @@ func cast0():
 	
 func cast1():
 	var cast = zone.instantiate()
+	sound["Jam"].play()
 	if Globals.has_upgrade("a2 follow"):
 		add_child(cast)
 	else:
@@ -205,6 +216,7 @@ func cast1():
 	pass
 	
 func cast2():
+	sound["Hide"].play()
 	modulate.a = .6
 	speedMult = a[2]["speedup"]+Globals.get_upgrade_value("a3 speedup")
 	invTimer.stop()
@@ -222,6 +234,7 @@ func cast3():
 	var cast = zone.instantiate()
 	holdAbilities.add_child(cast)
 	cast.global_position = global_position
+	sound["Big Explosion"].play()
 	cast.set_stuff(a[3]["range"]+Globals.get_upgrade_value("a4 range"), a[3]["duration"]+Globals.get_upgrade_value("a4 dur"), "kill")
 	pass
 

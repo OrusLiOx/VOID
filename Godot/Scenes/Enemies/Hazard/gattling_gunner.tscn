@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://ccxwcm7pkmo2s"]
+[gd_scene load_steps=6 format=3 uid="uid://ccxwcm7pkmo2s"]
 
 [ext_resource type="Script" path="res://Scenes/Enemies/Hazard/Scripts/gattling_gunner.gd" id="1_b5qf0"]
 [ext_resource type="Texture2D" uid="uid://cl430lyy35lkw" path="res://Sprites/Enemies/gattlingGunner.png" id="2_62yqc"]
 [ext_resource type="PackedScene" uid="uid://c2h47aefbvi62" path="res://Scenes/Enemies/_Generic/enemy_base.tscn" id="3_uw0e0"]
+[ext_resource type="AudioStream" uid="uid://d2xcjpt1kch81" path="res://Sounds/shoot/laserShoot3.wav" id="4_3po18"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0g34n"]
 radius = 21.0
@@ -20,6 +21,11 @@ texture = ExtResource("2_62yqc")
 shape = SubResource("CircleShape2D_0g34n")
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_3po18")
+volume_db = -25.0
+bus = &"SFX"
 
 [connection signal="jammed" from="EnemyBase" to="." method="_on_enemy_base_jammed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

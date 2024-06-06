@@ -1,8 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://dnaqej8yhbeu8"]
+[gd_scene load_steps=10 format=3 uid="uid://dnaqej8yhbeu8"]
 
 [ext_resource type="Script" path="res://Scenes/Player/Scripts/player.gd" id="1_5607v"]
 [ext_resource type="Texture2D" uid="uid://2feemrq8mq5" path="res://Sprites/Player/PlayerFill.png" id="1_jarrs"]
 [ext_resource type="Texture2D" uid="uid://cxs7mgsaru2xj" path="res://Sprites/Player/PlayerBase.png" id="2_8l36t"]
+[ext_resource type="AudioStream" uid="uid://b08psdwnpimd0" path="res://Sounds/hitHurt.wav" id="4_a1eso"]
+[ext_resource type="AudioStream" uid="uid://bhi2cni73qe6g" path="res://Sounds/explosion.wav" id="5_fpxf7"]
+[ext_resource type="AudioStream" uid="uid://deixg24wcl6mi" path="res://Sounds/jam.wav" id="6_lu10u"]
+[ext_resource type="AudioStream" uid="uid://bngn0vpadfy1w" path="res://Sounds/explosion2.wav" id="7_ll5as"]
+[ext_resource type="AudioStream" uid="uid://cs6fp4h37n1x6" path="res://Sounds/powerUp.wav" id="8_mtqpw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lv8k2"]
 size = Vector2(24, 23)
@@ -42,6 +47,24 @@ shape = SubResource("RectangleShape2D_lv8k2")
 [node name="Invincibility" type="Timer" parent="."]
 
 [node name="Cooldowns" type="Node2D" parent="."]
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_a1eso")
+
+[node name="Explosion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_fpxf7")
+
+[node name="Jam" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_lu10u")
+volume_db = -5.0
+pitch_scale = 0.8
+
+[node name="BigExplosion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_ll5as")
+
+[node name="Hide" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_mtqpw")
+pitch_scale = 0.8
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="timeout" from="Invincibility" to="." method="_on_invincibility_timeout"]

@@ -5,11 +5,13 @@ var dist
 var speed
 var targetOffset
 var fireRate
+var sound:AudioStreamPlayer
 
 # Called when the node enters the scene tree for the first time.
 func spawn():
 	projectile = load("res://Scenes/Enemies/_Generic/projectile.tscn")
 	timer = $Timer
+	sound = $AudioStreamPlayer
 	dist = randf_range(400,600)
 	speed = randf_range(125,175)
 	targetOffset = Vector2(randf_range(-50,50),randf_range(-50,50))
@@ -32,6 +34,7 @@ func _process(delta):
 func fire():
 	if $EnemyBase.is_jammed:
 		return
+	sound.play()
 	for i in [-1,0,1]:
 		var shot = projectile.instantiate()
 		Globals.holdProj.add_child(shot)
