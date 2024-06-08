@@ -1,0 +1,132 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5f4bk8be8ysc"]
+
+[ext_resource type="Script" path="res://Scenes/Player/Scripts/bindings.gd" id="1_7wn3p"]
+
+[node name="Bindings" type="Node2D"]
+script = ExtResource("1_7wn3p")
+
+[node name="Actions" type="Node2D" parent="."]
+position = Vector2(-211, 69)
+
+[node name="Up" type="Label" parent="Actions"]
+offset_left = -50.0
+offset_right = 200.0
+offset_bottom = 69.0
+theme_override_font_sizes/font_size = 50
+text = "Up"
+horizontal_alignment = 1
+
+[node name="Down" type="Label" parent="Actions"]
+offset_left = -50.0
+offset_top = 80.0
+offset_right = 200.0
+offset_bottom = 149.0
+theme_override_font_sizes/font_size = 50
+text = "Down"
+horizontal_alignment = 1
+
+[node name="Left" type="Label" parent="Actions"]
+offset_left = -50.0
+offset_top = 160.0
+offset_right = 200.0
+offset_bottom = 229.0
+theme_override_font_sizes/font_size = 50
+text = "Left"
+horizontal_alignment = 1
+
+[node name="Right" type="Label" parent="Actions"]
+offset_left = -50.0
+offset_top = 240.0
+offset_right = 200.0
+offset_bottom = 309.0
+theme_override_font_sizes/font_size = 50
+text = "Right"
+horizontal_alignment = 1
+
+[node name="Abilty0" type="Label" parent="Actions"]
+offset_left = -50.0
+offset_top = 320.0
+offset_right = 200.0
+offset_bottom = 389.0
+theme_override_font_sizes/font_size = 50
+text = "Ability 1"
+horizontal_alignment = 1
+
+[node name="Abilty1" type="Label" parent="Actions"]
+offset_left = -50.0
+offset_top = 400.0
+offset_right = 200.0
+offset_bottom = 469.0
+theme_override_font_sizes/font_size = 50
+text = "Ability 2"
+horizontal_alignment = 1
+
+[node name="Abilty2" type="Label" parent="Actions"]
+offset_left = -50.0
+offset_top = 480.0
+offset_right = 200.0
+offset_bottom = 549.0
+theme_override_font_sizes/font_size = 50
+text = "Ability 3"
+horizontal_alignment = 1
+
+[node name="Abilty3" type="Label" parent="Actions"]
+offset_left = -50.0
+offset_top = 560.0
+offset_right = 200.0
+offset_bottom = 629.0
+theme_override_font_sizes/font_size = 50
+text = "Ability 4"
+horizontal_alignment = 1
+
+[node name="Item" type="Label" parent="Actions"]
+offset_left = -50.0
+offset_top = 640.0
+offset_right = 200.0
+offset_bottom = 709.0
+theme_override_font_sizes/font_size = 50
+text = "Item"
+horizontal_alignment = 1
+
+[node name="Pause" type="Label" parent="Actions"]
+offset_left = -50.0
+offset_top = 720.0
+offset_right = 200.0
+offset_bottom = 789.0
+theme_override_font_sizes/font_size = 50
+text = "Pause"
+horizontal_alignment = 1
+
+[node name="ControlType" type="Node2D" parent="."]
+
+[node name="Key1" type="Label" parent="ControlType"]
+offset_left = 25.0
+offset_right = 275.0
+offset_bottom = 69.0
+theme_override_font_sizes/font_size = 50
+text = "Key 1"
+horizontal_alignment = 1
+
+[node name="Key2" type="Label" parent="ControlType"]
+offset_left = 325.0
+offset_right = 575.0
+offset_bottom = 69.0
+theme_override_font_sizes/font_size = 50
+text = "Key 2"
+horizontal_alignment = 1
+
+[node name="Mouse" type="Label" parent="ControlType"]
+offset_left = 625.0
+offset_right = 875.0
+offset_bottom = 69.0
+theme_override_font_sizes/font_size = 50
+text = "Mouse"
+horizontal_alignment = 1
+
+[node name="Cont" type="Label" parent="ControlType"]
+offset_left = 925.0
+offset_right = 1175.0
+offset_bottom = 69.0
+theme_override_font_sizes/font_size = 50
+text = "Controller"
+horizontal_alignment = 1

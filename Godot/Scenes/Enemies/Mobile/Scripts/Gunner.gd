@@ -3,7 +3,6 @@ var projectile
 var timer
 var dist
 var speed
-var targetOffset
 var fireRate
 var sound:AudioStreamPlayer
 
@@ -14,7 +13,6 @@ func spawn():
 	sound = $AudioStreamPlayer
 	dist = randf_range(400,600)
 	speed = randf_range(125,175)
-	targetOffset = Vector2(randf_range(-50,50),randf_range(-50,50))
 	fireRate = randf_range(1.7,2.7)
 	pass # Replace with function body.
 
@@ -24,9 +22,9 @@ func _process(delta):
 	if Globals.enemyPause:
 		return
 		
-	rotation = global_position.direction_to(Globals.player.global_position+targetOffset).angle()
-	if position.distance_to(Globals.player.position+targetOffset) > dist:
-		position += global_position.direction_to(Globals.player.global_position+targetOffset)*delta*speed
+	rotation = global_position.direction_to(Globals.player.global_position).angle()
+	if position.distance_to(Globals.player.position) > dist:
+		position += global_position.direction_to(Globals.player.global_position)*delta*speed
 	if timer.is_stopped():
 		timer.start(fireRate)
 	pass

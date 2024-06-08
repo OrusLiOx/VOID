@@ -62,7 +62,6 @@ func _ready():
 		"temp cd": .15
 	}
 	
-
 func reset():
 	itemDisplay.modulate = Color(.5,.5,.5)
 	itemDisplay.get_child(0).modulate.a = 0
@@ -161,6 +160,7 @@ func start_upgrade_select():
 	if have.has("pick 3"):
 		take = 3
 		have.erase("pick 3")
+		available.push_back("pick 3")
 	
 	for key in temp.keys():
 		temp[key]-=1
@@ -363,6 +363,9 @@ func take_upgrade(upgrade):
 			available.remove_at(available.find(upgrade))
 		"a2 follow":
 			have["a2 follow"] = 1
+			available.remove_at(available.find(upgrade))
+		"pick 3":
+			have[upgrade] = 1
 			available.remove_at(available.find(upgrade))
 		"heal":
 			Globals.player.heal()

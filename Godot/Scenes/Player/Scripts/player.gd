@@ -124,6 +124,8 @@ func die():
 func hit(damage):
 	if iframes >0:
 		return
+		
+	sound["Hit"].play()
 	if shield:
 		shield = false
 		emit_signal("update_health", hp, hpMax, false)	
@@ -133,7 +135,6 @@ func hit(damage):
 	healthBar.size.y = 42*hp/hpMax
 	iframes = .5 + Globals.get_upgrade_value("iframes")
 	
-	sound["Hit"].play()
 	if hp <=0:
 		die()
 	emit_signal("update_health", hp, hpMax)
