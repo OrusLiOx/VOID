@@ -352,34 +352,34 @@ func take_upgrade(upgrade):
 			have["a1 linger"] = 1
 			available.push_back("a1 dur")
 			available.push_back("a1 follow")
-			available.remove_at(available.find(upgrade))
+			available.erase(upgrade)
 		"a2 linger":
 			have["a2 linger"] = 1
 			available.push_back("a2 dur")
 			available.push_back("a2 follow")
-			available.remove_at(available.find(upgrade))
+			available.erase(upgrade)
 		"a1 follow":
 			have["a1 follow"] = 1
-			available.remove_at(available.find(upgrade))
+			available.erase(upgrade)
 		"a2 follow":
 			have["a2 follow"] = 1
-			available.remove_at(available.find(upgrade))
+			available.erase(upgrade)
 		"pick 3":
 			have[upgrade] = 1
-			available.remove_at(available.find(upgrade))
+			available.erase(upgrade)
 		"heal":
 			Globals.player.heal()
 		"health":
 			Globals.player.hpMax +=1
 			Globals.player.heal(1)
 			if Globals.player.hpMax == 8:
-				available.remove_at(available.find(upgrade))
+				available.erase(upgrade)
 		"regen":
 			have["regen"] = 1
-			available.remove_at(available.find(upgrade))
+			available.erase(upgrade)
 		"shield":
 			have["shield"] = 1
-			available.remove_at(available.find(upgrade))
+			available.erase(upgrade)
 		_:
 			if upgrade.find("temp")!=-1 and upgrade != "temp dur":
 				temp[upgrade] = baseTempDur[upgrade]+have["temp dur"]
@@ -403,7 +403,7 @@ func take_upgrade(upgrade):
 				if have.has(upgrade):
 					if upgrade.contains("cd"):
 						if have[upgrade] >=5:
-							available.remove_at(available.find(upgrade))
+							available.erase(upgrade)
 					have[upgrade] += 1
 				else:
 					have[upgrade] = 1

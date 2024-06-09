@@ -33,6 +33,8 @@ func _process(_delta):
 				unpause()
 			else:
 				pause()
+		elif $Settings.visible:
+			close_settings()
 	pass
 
 func start_game():
@@ -87,7 +89,10 @@ func open_settings():
 	$Settings.visible = true
 
 func close_settings():
-	$Settings.visible = false
+	if $Settings/Bindings.visible:
+		$Settings/Bindings.visible = false
+	else:
+		$Settings.visible = false
 
 func open_help():
 	$Help.visible = true

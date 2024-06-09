@@ -5,7 +5,6 @@ var current
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var list={
-		"Controls" : $Controls,
 		"Basics":$Basics,
 		"Health & Damage": $Health_Enemies,
 		"Abilities Part 1": $Abilities1,
@@ -37,8 +36,8 @@ func _ready():
 	$Abilities1/A2Jam.modulate = Globals.jammedColor
 	$Health_Enemies/Colors/red.modulate = Globals.dangerColor
 	
-	current = $Controls
-	$Controls.visible = true
+	current = $Basics
+	$Basics.visible = true
 	pass # Replace with function body.
 
 func exit():

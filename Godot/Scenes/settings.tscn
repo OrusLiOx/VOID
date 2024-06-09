@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dwk5ktuot37aa"]
+[gd_scene load_steps=5 format=3 uid="uid://dwk5ktuot37aa"]
 
 [ext_resource type="Script" path="res://Scenes/Scripts/settings.gd" id="1_3m4xg"]
 [ext_resource type="PackedScene" uid="uid://b5f4bk8be8ysc" path="res://Scenes/bindings.tscn" id="2_f76in"]
+[ext_resource type="Theme" uid="uid://cedwkvggr4pcc" path="res://Themes/MenuButton.tres" id="3_oriae"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xh8e3"]
 
@@ -23,14 +24,14 @@ flat = true
 
 [node name="Title" type="Label" parent="."]
 offset_right = 1921.0
-offset_bottom = 401.0
+offset_bottom = 326.0
 theme_override_font_sizes/font_size = 100
 text = "SETTINGS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2(502, 170)
+position = Vector2(502, 140)
 
 [node name="infiniteLives" type="Label" parent="Node2D"]
 offset_top = 242.0
@@ -111,9 +112,19 @@ offset_top = 37.0
 offset_right = 921.0
 offset_bottom = 53.0
 
+[node name="Controls" type="Button" parent="."]
+offset_left = 688.0
+offset_top = 779.0
+offset_right = 1293.0
+offset_bottom = 913.0
+theme = ExtResource("3_oriae")
+text = "Controls"
+
 [node name="Bindings" parent="." instance=ExtResource("2_f76in")]
-position = Vector2(508.393, 476.942)
+visible = false
+position = Vector2(54, 87)
 
 [connection signal="toggled" from="Node2D/infiniteLives/InfiniteLives" to="." method="_on_infinite_lives_toggled"]
 [connection signal="focus_exited" from="Node2D/lives/LineEdit" to="." method="_on_line_edit_focus_exited"]
 [connection signal="text_changed" from="Node2D/lives/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="button_down" from="Controls" to="." method="_on_controls_button_down"]

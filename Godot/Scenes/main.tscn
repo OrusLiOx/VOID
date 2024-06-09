@@ -122,19 +122,20 @@ text = "Quit"
 
 [node name="Button" type="Button" parent="Settings"]
 z_index = 10
-offset_left = 737.0
-offset_top = 821.0
-offset_right = 1237.0
-offset_bottom = 971.0
+offset_left = 10.0
+offset_top = 9.0
+offset_right = 141.0
+offset_bottom = 122.0
 theme = ExtResource("4_ld5mg")
-text = "Exit"
+text = "X"
 
 [node name="Help" parent="." instance=ExtResource("6_lx7m2")]
+visible = false
 z_index = 10
 
 [connection signal="gameover" from="Game" to="." method="_on_game_gameover"]
 [connection signal="button" from="Title" to="." method="button_down"]
-[connection signal="button_down" from="Pause/Buttons/Continue" to="." method="unpause"]
+[connection signal="button_up" from="Pause/Buttons/Continue" to="." method="unpause"]
 [connection signal="button_down" from="Pause/Buttons/Settings" to="." method="open_settings"]
 [connection signal="button_down" from="Pause/Buttons/Restart" to="." method="restart_game"]
 [connection signal="button_down" from="Pause/Buttons/Quit" to="." method="to_title"]
