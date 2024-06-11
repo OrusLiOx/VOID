@@ -50,6 +50,7 @@ position = Vector2(772, 250)
 [node name="Continue" type="Button" parent="Pause/Buttons"]
 offset_right = 500.0
 offset_bottom = 150.0
+focus_neighbor_top = NodePath("../Quit")
 theme = ExtResource("4_ld5mg")
 text = "Continue"
 
@@ -71,10 +72,12 @@ text = "Restart"
 offset_top = 600.0
 offset_right = 500.0
 offset_bottom = 750.0
+focus_neighbor_bottom = NodePath("../Continue")
 theme = ExtResource("4_ld5mg")
 text = "Quit"
 
 [node name="GameOver" type="ColorRect" parent="."]
+visible = false
 z_index = 10
 offset_right = 2434.0
 offset_bottom = 1280.0
@@ -119,6 +122,7 @@ theme = ExtResource("4_ld5mg")
 text = "Quit"
 
 [node name="Settings" parent="." instance=ExtResource("5_8kfcr")]
+visible = false
 
 [node name="Button" type="Button" parent="Settings"]
 z_index = 10
@@ -142,3 +146,4 @@ z_index = 10
 [connection signal="button_down" from="GameOver/Node2D/Button" to="." method="restart_game"]
 [connection signal="button_down" from="GameOver/Node2D/Button2" to="." method="to_title"]
 [connection signal="button_down" from="Settings/Button" to="." method="close_settings"]
+[connection signal="mouse_entered" from="Settings/Button" to="." method="_on_button_mouse_entered"]

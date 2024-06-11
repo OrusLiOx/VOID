@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://b5f4bk8be8ysc"]
+[gd_scene load_steps=3 format=3 uid="uid://b5f4bk8be8ysc"]
 
 [ext_resource type="Script" path="res://Scenes/Player/Scripts/bindings.gd" id="1_7wn3p"]
+[ext_resource type="Theme" uid="uid://buk28tf7gip32" path="res://Themes/BindingButton.tres" id="2_3dplx"]
 
 [node name="Bindings" type="Node2D"]
 script = ExtResource("1_7wn3p")
@@ -127,6 +128,24 @@ theme_override_font_sizes/font_size = 50
 text = "Controller"
 horizontal_alignment = 1
 
+[node name="ColorRect2" type="ColorRect" parent="ControlType/Cont"]
+layout_mode = 0
+offset_top = 80.0
+offset_right = 250.0
+offset_bottom = 390.0
+color = Color(0.0588235, 0.0588235, 0.0588235, 1)
+
+[node name="Label" type="Label" parent="ControlType/Cont"]
+modulate = Color(0.682353, 0.682353, 0.682353, 1)
+layout_mode = 0
+offset_top = 80.0
+offset_right = 250.0
+offset_bottom = 390.0
+theme = ExtResource("2_3dplx")
+text = "LeftStick"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Label" type="Label" parent="."]
 offset_left = 1.0
 offset_top = 886.0
@@ -134,3 +153,15 @@ offset_right = 1920.0
 offset_bottom = 955.0
 theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 1.0
+offset_top = 949.0
+offset_right = 1920.0
+offset_bottom = 1018.0
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

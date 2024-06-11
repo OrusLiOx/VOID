@@ -64,6 +64,7 @@ func to_title():
 	$Title.visible = true
 	$Settings.visible = false
 	$Help.visible = false
+	
 
 func restart_game():
 	end_game()

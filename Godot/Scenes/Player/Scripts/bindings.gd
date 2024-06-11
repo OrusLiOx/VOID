@@ -5,6 +5,8 @@ var buttons:Dictionary
 
 var butTheme
 var mainTheme
+var timerLabel
+var timer:Timer
 
 var waitForInput = false
 var settingAction:String
@@ -12,6 +14,8 @@ var settingIndex:int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	timerLabel = $Label2
+	timer = $Timer
 	butTheme = load("res://Themes/BindingButton.tres")
 	mainTheme = load("res://Themes/MenuButton.tres")
 	bindings = {
@@ -65,6 +69,10 @@ func make_binding_button(action, index, parent):
 	clear.button_down.connect(clear_binding.bind(action, index))
 	return but
 
+func _process(_delta):
+	if !timer.is_stopped():
+		timerLabel.text = str(int(timer.time_left)+1)
+
 func _input(event):
 	if !waitForInput or !event.is_pressed():
 		return
@@ -86,6 +94,7 @@ func _input(event):
 	
 	waitForInput = false
 	$Label.text = ""
+	timerLabel.text = ""
 	set_binding(settingAction, e, settingIndex)
 
 func pressed_binding(action, index):
@@ -98,9 +107,11 @@ func pressed_binding(action, index):
 			$Label.text = "Press the desired mouse button"
 		3:
 			$Label.text = "Press the desired controller button"
+	$Label.text += " (wait to cancel)"
 	settingAction = action
 	settingIndex = index
 	waitForInput = true
+	timer.start(5)
 
 func set_binding(action, event, index = 0):
 	if event == null:
@@ -179,3 +190,9 @@ func clear_binding(action, index):
 	InputMap.action_erase_event(action, bind)
 	buttons[action][index].text = ""
 	
+func _on_timer_timeout():
+	timer.stop()
+	waitForInput = false
+	$Label.text = ""
+	timerLabel.text = ""
+	pass # Replace with function body.

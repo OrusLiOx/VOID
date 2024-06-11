@@ -24,7 +24,6 @@ func _on_line_edit_focus_exited():
 	pass # Replace with function body.
 
 
-
 func _on_controls_button_down():
 	$Bindings.visible = true
 	pass # Replace with function body.
