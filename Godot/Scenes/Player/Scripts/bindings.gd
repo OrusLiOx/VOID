@@ -28,7 +28,7 @@ func _ready():
 		"Ability2": [KEY_SHIFT, KEY_3, null, JOY_BUTTON_X],
 		"Ability3": [KEY_SPACE, KEY_4, null, JOY_BUTTON_Y],
 		"Item": [KEY_F, KEY_5, null, JOY_BUTTON_RIGHT_SHOULDER],
-		"Pause": [KEY_ESCAPE, null, null, JOY_BUTTON_START]
+		"Pause": [KEY_ESCAPE, KEY_TAB, null, JOY_BUTTON_START]
 	}
 	
 	var keys = bindings.keys()
@@ -93,6 +93,7 @@ func _input(event):
 		return
 	
 	waitForInput = false
+	timer.stop()
 	$Label.text = ""
 	timerLabel.text = ""
 	set_binding(settingAction, e, settingIndex)

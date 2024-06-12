@@ -98,7 +98,7 @@ func start():
 		child.queue_free()
 	wave = 0
 	waveLength = 30
-	waveWait = 1
+	waveWait = 5
 	numOfHazards = 0
 	numOfPacks = 1
 	enemyTypes = 1
